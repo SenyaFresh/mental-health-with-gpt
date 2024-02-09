@@ -21,5 +21,5 @@ interface CoreProvider {
 
     val remoteTimeoutMillis: Long get() = 10000L
 
-    val appRestartTimeoutMillis: Long get() = 10000L
+    val debounceTimeoutMillis: Long get() = 200L
 }
