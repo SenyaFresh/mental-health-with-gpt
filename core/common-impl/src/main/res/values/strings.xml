@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="core_common_exception_connection">Ошибка загрузки. Нет подключения к интернету.</string>
+    <string name="core_common_exception_authentication">Ошибка аутентификации. Попробуйте перезайти позднее.</string>
+    <string name="core_common_exception_timeout">Ошибка. Время выполнения операции истекло.</string>
+    <string name="core_common_exception_unknown">Неизвестная ошибка приложения.</string>
+
+</resources>

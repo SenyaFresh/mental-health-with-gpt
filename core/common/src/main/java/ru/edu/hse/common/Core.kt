@@ -20,6 +20,10 @@ object Core {
 
     val resources: Resources get() = coreProvider.resources
 
+    val toaster: Toaster get() = coreProvider.toaster
+
+    val remoteTimeoutMillis: Long get() = coreProvider.remoteTimeoutMillis
+
     fun init(coreProvider: CoreProvider) {
         this.coreProvider = coreProvider
     }

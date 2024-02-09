@@ -13,5 +13,5 @@ interface ErrorHandler {
     /**
      * Get user-friendly message from [exception]
      */
-    fun getUserMessage(exception: Throwable)
+    fun getUserFriendlyMessage(exception: Throwable) : String
 }
