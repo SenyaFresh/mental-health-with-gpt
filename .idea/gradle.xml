@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/core/common-impl" />
             <option value="$PROJECT_DIR$/core/presentation" />
             <option value="$PROJECT_DIR$/core/themes" />
+            <option value="$PROJECT_DIR$/features" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

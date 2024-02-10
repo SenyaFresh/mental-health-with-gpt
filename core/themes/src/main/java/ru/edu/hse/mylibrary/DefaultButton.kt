@@ -18,11 +18,17 @@ fun DefaultButton(
     borderColor: Color = OutlineColor,
     containerColor: Color = PrimaryColor
 ) = OutlinedButton(
-    modifier = modifier, border = BorderStroke(
-        width = 2.dp, color = borderColor
-    ), onClick = onClick, colors = ButtonDefaults.buttonColors(
+    modifier = modifier,
+    border = BorderStroke(
+        width = 1.dp,
+        color = borderColor
+    ),
+    onClick = onClick,
+    colors = ButtonDefaults.buttonColors(
         containerColor = containerColor,
-    ), elevation = ButtonDefaults.buttonElevation(0.dp), shape = RoundedCornerShape(10.dp)
+    ),
+    elevation = ButtonDefaults.buttonElevation(0.dp),
+    shape = RoundedCornerShape(15.dp)
 ) {
     DefaultText(text, fontWeight = FontWeight.Medium)
 }

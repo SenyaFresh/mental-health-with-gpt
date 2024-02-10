@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Mental Health with GPT"
 include(":app")
-include(":core")
+include(":features")
 include(":core:common")
 include(":core:common-impl")
 include(":core:presentation")

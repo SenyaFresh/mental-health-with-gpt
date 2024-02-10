@@ -7,6 +7,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -15,9 +16,13 @@ fun DefaultCard(
 ) = Card(
     modifier = modifier,
     border = BorderStroke(
-        width = 2.dp, color = OutlineColor
+        width = 1.dp,
+        color = OutlineColor
     ),
     elevation = CardDefaults.elevatedCardElevation(0.dp),
-    shape = RoundedCornerShape(10.dp),
+    shape = RoundedCornerShape(15.dp),
+    colors = CardDefaults.cardColors(
+        containerColor = Color.Transparent
+    ),
     content = content
 )
