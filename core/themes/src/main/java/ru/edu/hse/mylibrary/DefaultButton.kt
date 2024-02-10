@@ -1,0 +1,29 @@
+package ru.edu.hse.mylibrary
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun DefaultButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit,
+    borderColor: Color = OutlineColor,
+    containerColor: Color = PrimaryColor
+) = OutlinedButton(
+    modifier = modifier, border = BorderStroke(
+        width = 2.dp, color = borderColor
+    ), onClick = onClick, colors = ButtonDefaults.buttonColors(
+        containerColor = containerColor,
+    ), elevation = ButtonDefaults.buttonElevation(0.dp), shape = RoundedCornerShape(10.dp)
+) {
+    DefaultText(text, fontWeight = FontWeight.Medium)
+}
+
