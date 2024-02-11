@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "37046039367",
+    "project_id": "mental-health-firebase-6a762",
+    "storage_bucket": "mental-health-firebase-6a762.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37046039367:android:d54172206beecea33c9262",
+        "android_client_info": {
+          "package_name": "ru.edu.hse.mentalhealthwithgpt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCt3f9mwCTP8MDlfoFwWdpqnv0FRWCF0AI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

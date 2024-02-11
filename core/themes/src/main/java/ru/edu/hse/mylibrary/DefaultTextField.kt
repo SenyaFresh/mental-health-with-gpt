@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextFieldDefaults
@@ -19,19 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    icon : @Composable () -> Unit,
-    label : String,
+    icon: @Composable () -> Unit,
+    label: String,
     hint: String,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default
-)
-
-{
+) {
     DefaultCard(
         modifier = modifier
     ) {
@@ -40,7 +36,7 @@ fun DefaultTextField(
                 modifier = Modifier
                     .height(35.dp)
                     .fillMaxWidth()
-                    .background(Color(0xFFF1F1F1))
+                    .background(LightBackgroundColor)
                     .padding(start = 14.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -65,7 +61,7 @@ fun DefaultTextField(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                 ),
-                label = { DefaultText(hint)},
+                label = { DefaultText(hint, color = LightTextColor) },
                 keyboardOptions = keyboardOptions
             )
         }
