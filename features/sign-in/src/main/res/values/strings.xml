@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_sign_in_empty_email">Вы не ввели адрес почты.</string>
+    <string name="feature_sign_in_empty_password">Вы не ввели адрес почты.</string>
+    <string name="feature_sign_in_invalid_data">Ошибка. Проверьте правильность введенных данных.</string>
+
+</resources>

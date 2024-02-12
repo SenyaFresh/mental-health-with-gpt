@@ -11,4 +11,14 @@ sealed class SignInEvent {
      * Launch sign up screen.
      */
     data object LaunchSignUp : SignInEvent()
+
+    /**
+     * Disable email error.
+     */
+    data object DisableEmailError : SignInEvent()
+
+    /**
+     * Disable password error.
+     */
+    data object DisablePasswordError : SignInEvent()
 }
