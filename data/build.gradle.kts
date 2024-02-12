@@ -2,8 +2,12 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+
+    // hilt 1/3
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+
+
 }
 
 android {
@@ -46,6 +50,7 @@ dependencies {
 
     api(project(":core:common"))
 
+    // hilt 2/3
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
@@ -54,6 +59,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
+// hilt 3/3
 kapt {
     correctErrorTypes = true
 }

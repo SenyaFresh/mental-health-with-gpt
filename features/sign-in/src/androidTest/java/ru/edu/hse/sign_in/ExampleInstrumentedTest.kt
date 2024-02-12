@@ -1,4 +1,4 @@
-package ru.edu.hse.sing_in
+package ru.edu.hse.sign_in
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
