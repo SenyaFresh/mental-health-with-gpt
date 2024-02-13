@@ -75,7 +75,7 @@ class SignInViewModel @Inject constructor(
                 emailErrorStateFlow.value = true
                 toaster.showToast(resources.getString(R.string.feature_sign_in_empty_email))
             } catch (e: EmptyPasswordException) {
-                emailErrorStateFlow.value = true
+                passwordErrorStateFlow.value = true
                 toaster.showToast(resources.getString(R.string.feature_sign_in_empty_password))
             } catch (e: AuthenticationException) {
                 toaster.showToast(resources.getString(R.string.feature_sign_in_invalid_data))

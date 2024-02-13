@@ -25,6 +25,7 @@ import ru.edu.hse.sign_in.presentation.events.SignInEvent
 import ru.edu.hse.sign_in.presentation.viewmodels.SignInViewModel
 import ru.edu.hse.themes.DefaultButton
 import ru.edu.hse.themes.DefaultTextField
+import ru.edu.hse.themes.DefaultTitle
 import ru.edu.hse.themes.EmailIcon
 import ru.edu.hse.themes.PasswordIcon
 import ru.edu.hse.themes.SecondaryColor
@@ -49,10 +50,13 @@ fun SignInScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 200.dp, start = 30.dp, end = 30.dp)
+                .padding(top = 150.dp, start = 30.dp, end = 30.dp)
                 .statusBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            DefaultTitle(modifier = Modifier.padding(bottom = 20.dp),text = "Вход")
+
             DefaultTextField(
                 modifier = Modifier.padding(bottom = 20.dp),
                 value = email,
