@@ -31,8 +31,12 @@ android {
         jvmTarget = "1.8"
     }
 
+    // compose 1/2
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+    buildFeatures {
+        compose = true
     }
 }
 
@@ -42,6 +46,7 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+    // compose 2/2
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")

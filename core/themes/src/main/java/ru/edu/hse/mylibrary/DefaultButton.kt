@@ -1,6 +1,7 @@
 package ru.edu.hse.mylibrary
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,7 +22,7 @@ fun DefaultButton(
 ) = OutlinedButton(
     modifier = modifier,
     border = BorderStroke(
-        width = 1.dp,
+        width = OutlineThickness,
         color = borderColor
     ),
     onClick = onClick,
@@ -28,8 +30,14 @@ fun DefaultButton(
         containerColor = containerColor,
     ),
     elevation = ButtonDefaults.buttonElevation(0.dp),
-    shape = RoundedCornerShape(15.dp)
+    shape = RoundedCornerShape(CornerSize)
 ) {
     DefaultText(text, fontWeight = FontWeight.Medium)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultButtonPreview() {
+    DefaultButton(modifier = Modifier.padding(20.dp),text = "Preview", onClick = {  })
 }
 
