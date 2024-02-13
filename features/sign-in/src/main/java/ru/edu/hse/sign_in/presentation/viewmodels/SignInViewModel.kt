@@ -56,16 +56,16 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: SignInEvent) = debounce {
+    fun onEvent(event: SignInEvent) {
         when (event) {
             is SignInEvent.SignIn -> signIn(event.email, event.password)
-            is SignInEvent.LaunchSignUp -> router.launchSignUp()
-            is SignInEvent.DisableEmailError -> progressStateFlow
-            is SignInEvent.DisablePasswordError -> progressStateFlow
+            is SignInEvent.LaunchSignUp ->  debounce { router.launchSignUp() }
+            is SignInEvent.DisableEmailError -> emailErrorStateFlow.value = false
+            is SignInEvent.DisablePasswordError -> passwordErrorStateFlow.value = false
         }
     }
 
-    private fun signIn(email: String, password: String) {
+    private fun signIn(email: String, password: String) = debounce {
         viewModelScope.launch {
             try {
                 progressStateFlow.value = true

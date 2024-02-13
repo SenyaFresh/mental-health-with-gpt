@@ -1,4 +1,4 @@
-package ru.edu.hse.mylibrary
+package ru.edu.hse.themes
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package ru.edu.hse.mylibrary
+package ru.edu.hse.themes
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding
@@ -18,7 +18,8 @@ fun DefaultButton(
     text: String,
     onClick: () -> Unit,
     borderColor: Color = OutlineColor,
-    containerColor: Color = PrimaryColor
+    containerColor: Color = PrimaryColor,
+    enabled: Boolean = true
 ) = OutlinedButton(
     modifier = modifier,
     border = BorderStroke(
@@ -30,9 +31,10 @@ fun DefaultButton(
         containerColor = containerColor,
     ),
     elevation = ButtonDefaults.buttonElevation(0.dp),
-    shape = RoundedCornerShape(CornerSize)
+    shape = RoundedCornerShape(CornerSize),
+    enabled = enabled
 ) {
-    DefaultText(text, fontWeight = FontWeight.Medium)
+    DefaultText(text, fontWeight = FontWeight.SemiBold)
 }
 
 @Preview(showBackground = true)

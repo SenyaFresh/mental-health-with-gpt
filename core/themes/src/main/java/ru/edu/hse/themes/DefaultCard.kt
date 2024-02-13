@@ -1,4 +1,4 @@
-package ru.edu.hse.mylibrary
+package ru.edu.hse.themes
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ColumnScope
@@ -15,12 +15,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DefaultCard(
-    modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit
+    modifier: Modifier = Modifier, color: Color = OutlineColor, content: @Composable ColumnScope.() -> Unit
 ) = Card(
     modifier = modifier,
     border = BorderStroke(
         width = OutlineThickness,
-        color = OutlineColor
+        color = color
     ),
     elevation = CardDefaults.elevatedCardElevation(0.dp),
     shape = RoundedCornerShape(CornerSize),

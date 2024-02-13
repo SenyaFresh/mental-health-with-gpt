@@ -1,12 +1,14 @@
-package ru.edu.hse.mylibrary
+package ru.edu.hse.themes
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
@@ -32,10 +34,18 @@ fun DefaultTextField(
     label: String,
     hint: String,
     modifier: Modifier = Modifier,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    error: Boolean = false
 ) {
+    val onErrorColor = if (error) {
+        Color.Red
+    } else {
+        Color.Black
+    }
+
     DefaultCard(
-        modifier = modifier
+        modifier = modifier,
+        color = onErrorColor
     ) {
         Column {
             Row(
@@ -46,14 +56,14 @@ fun DefaultTextField(
                     .padding(start = 14.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                icon()
+                Box(modifier = Modifier.size(20.dp)) {icon()}
                 DefaultText(
                     label,
-                    modifier = Modifier.padding(start = 8.dp),
-                    fontWeight = FontWeight.Light
+                    modifier = Modifier.padding(start = 8.dp, top = 2.dp),
+                    fontWeight = FontWeight.Medium,
                 )
             }
-            HorizontalDivider(thickness = 1.dp, color = Color.Black)
+            HorizontalDivider(thickness = 1.dp, color = onErrorColor)
             OutlinedTextField(
                 modifier = Modifier
                     .height(60.dp)

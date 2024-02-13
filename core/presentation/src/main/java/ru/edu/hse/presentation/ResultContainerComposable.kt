@@ -11,8 +11,8 @@ import androidx.compose.ui.graphics.Color
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.mylibrary.DefaultButton
-import ru.edu.hse.mylibrary.DefaultText
+import ru.edu.hse.themes.DefaultButton
+import ru.edu.hse.themes.DefaultText
 
 
 /**
