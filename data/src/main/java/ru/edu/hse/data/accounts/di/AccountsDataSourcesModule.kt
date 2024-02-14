@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface AccountsSourcesModule {
+interface AccountsDataSourcesModule {
 
     @Binds
     @Singleton
-    fun bindAccountSource(
+    fun bindAccountDataSource(
         accountsDataSource: FirebaseAccountsDataSource
     ) : AccountsDataSource
 }

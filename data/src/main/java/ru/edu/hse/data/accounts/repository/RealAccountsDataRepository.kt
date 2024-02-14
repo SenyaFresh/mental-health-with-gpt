@@ -1,4 +1,4 @@
-package ru.edu.hse.data.accounts
+package ru.edu.hse.data.accounts.repository
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -6,7 +6,6 @@ import kotlinx.coroutines.launch
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.common.flow.LazyFlowLoaderFactory
-import ru.edu.hse.data.AccountsDataRepository
 import ru.edu.hse.data.accounts.entities.AccountDataEntity
 import ru.edu.hse.data.accounts.entities.SignUpDataEntity
 import ru.edu.hse.data.accounts.sources.AccountsDataSource

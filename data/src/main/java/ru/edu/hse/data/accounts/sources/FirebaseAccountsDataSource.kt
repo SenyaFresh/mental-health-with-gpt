@@ -142,7 +142,7 @@ class FirebaseAccountsDataSource : AccountsDataSource {
 
         const val KEY_EMAIL = "email"
         const val KEY_USERNAME = "username"
-        const val KEY_DEPRESSION_POINTS = "depression_points"
+        const val KEY_DEPRESSION_POINTS = "depressionPoints"
     }
 
 }

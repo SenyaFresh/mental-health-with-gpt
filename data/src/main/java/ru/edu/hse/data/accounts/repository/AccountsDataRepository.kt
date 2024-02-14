@@ -1,4 +1,4 @@
-package ru.edu.hse.data
+package ru.edu.hse.data.accounts.repository
 
 import kotlinx.coroutines.flow.Flow
 import ru.edu.hse.common.ResultContainer
