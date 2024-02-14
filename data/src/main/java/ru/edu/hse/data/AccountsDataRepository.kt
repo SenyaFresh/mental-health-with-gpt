@@ -20,7 +20,12 @@ interface AccountsDataRepository {
     /**
      * Update account [username] and [email].
      */
-    suspend fun updateAccount(username: String, email: String)
+    suspend fun updateAccountUsernameAndEmail(username: String, email: String)
+
+    /**
+     * Update account [depressionPoints].
+     */
+    suspend fun updateAccountDepressionPoints(depressionPoints: Int)
 
     /**
      * Log out from account.

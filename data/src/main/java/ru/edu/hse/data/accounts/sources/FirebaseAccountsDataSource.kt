@@ -92,11 +92,7 @@ class FirebaseAccountsDataSource : AccountsDataSource {
             .get()
             .addOnSuccessListener {
                 logger.log("getAccount:success")
-                accountDataEntity = AccountDataEntity(
-                    id = user.uid,
-                    email = it[KEY_EMAIL].toString(),
-                    username = it[KEY_USERNAME].toString()
-                )
+                accountDataEntity = it.toObject(AccountDataEntity::class.java)
             }
             .addOnFailureListener {
                 logger.log("getAccount:failure")
@@ -105,13 +101,17 @@ class FirebaseAccountsDataSource : AccountsDataSource {
         return accountDataEntity!!
     }
 
-    override suspend fun updateAccount(username: String, email: String): AccountDataEntity {
-        val user = auth.currentUser ?: throw AuthenticationException()
-        var accountDataEntity: AccountDataEntity? = null
-        val firestoreAccountUpdateData = hashMapOf(
-            KEY_EMAIL to email,
-            KEY_USERNAME to username
-        )
+    override suspend fun updateAccount(
+        username: String?,
+        email: String?,
+        depressionPoints: Int?
+    ): AccountDataEntity {
+        var accountDataEntity: AccountDataEntity = getAccount()
+        val firestoreAccountUpdateData = HashMap<String, Any>()
+
+        username?.let { firestoreAccountUpdateData[KEY_USERNAME] = it }
+        email?.let { firestoreAccountUpdateData[KEY_EMAIL] = it }
+        depressionPoints?.let { firestoreAccountUpdateData[KEY_DEPRESSION_POINTS] = it }
 
         db.collection(USERS_COLLECTION)
             .document(auth.currentUser!!.uid)
@@ -119,10 +119,10 @@ class FirebaseAccountsDataSource : AccountsDataSource {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     logger.log("updateAccount:success")
-                    accountDataEntity = AccountDataEntity(
-                        id = user.uid,
-                        email = email,
-                        username = username
+                    accountDataEntity = accountDataEntity.copy(
+                        email = email ?: accountDataEntity.email,
+                        username = username ?: accountDataEntity.username,
+                        depressionPoints = depressionPoints ?: accountDataEntity.depressionPoints,
                     )
                 } else {
                     logger.log("updateAccount:failure")
@@ -130,7 +130,7 @@ class FirebaseAccountsDataSource : AccountsDataSource {
                 }
             }
 
-        return accountDataEntity!!
+        return accountDataEntity
     }
 
     override suspend fun logout() {
@@ -142,6 +142,7 @@ class FirebaseAccountsDataSource : AccountsDataSource {
 
         const val KEY_EMAIL = "email"
         const val KEY_USERNAME = "username"
+        const val KEY_DEPRESSION_POINTS = "depression_points"
     }
 
 }

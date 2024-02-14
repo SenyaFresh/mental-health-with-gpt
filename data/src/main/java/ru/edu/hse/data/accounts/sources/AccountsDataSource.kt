@@ -9,7 +9,7 @@ interface AccountsDataSource {
     /**
      * Listen for account changes and log out.
      */
-    fun listenAuthState() : Flow<String?>
+    fun listenAuthState(): Flow<String?>
 
     /**
      * Log in to account.
@@ -29,7 +29,11 @@ interface AccountsDataSource {
     /**
      * Update account info and get updated account entity.
      */
-    suspend fun updateAccount(username: String, email: String): AccountDataEntity
+    suspend fun updateAccount(
+        username: String? = null,
+        email: String? = null,
+        depressionPoints: Int? = null
+    ): AccountDataEntity
 
     suspend fun logout()
 }
