@@ -37,6 +37,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    // compose 1/2
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
@@ -50,9 +58,19 @@ dependencies {
 
     api(project(":core:common"))
 
+    // compose 2/2
+    val composeBom = platform("androidx.compose:compose-bom:2024.02.00")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+
     // hilt 2/3
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    // health connect
+    implementation("androidx.health.connect:connect-client:1.0.0-alpha11")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
