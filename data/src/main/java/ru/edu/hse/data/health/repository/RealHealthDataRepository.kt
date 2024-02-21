@@ -49,24 +49,29 @@ class RealHealthDataRepository @Inject constructor(
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
         val startOfPreviousDay = startOfDay.minus(1, ChronoUnit.DAYS)
 
-        val previousDayHealthData = healthDataSource.getHealthData(startOfPreviousDay, startOfDay)
-
         val missions = neutralMissions.toMutableList()
 
-        if (previousDayHealthData.stepsCount != null && previousDayHealthData.stepsCount < 4000) {
-            missions += stepsMission
-        }
+        if (checkInstalled() && hasAllPermissions()) {
 
-        if (previousDayHealthData.heartRateAvg != null && previousDayHealthData.heartRateAvg > 80) {
-            missions += heartRateMission
-        }
+            val previousDayHealthData =
+                healthDataSource.getHealthData(startOfPreviousDay, startOfDay)
 
-        if (previousDayHealthData.bloodPressureSystolicAvg != null &&
-            previousDayHealthData.bloodPressureSystolicAvg > 140 &&
-            previousDayHealthData.bloodPressureDiastolicAvg != null &&
-            previousDayHealthData.bloodPressureDiastolicAvg > 90
-        ) {
-            missions += bloodPressureMission
+            if (previousDayHealthData.stepsCount != null && previousDayHealthData.stepsCount < 4000) {
+                missions += stepsMission
+            }
+
+            if (previousDayHealthData.heartRateAvg != null && previousDayHealthData.heartRateAvg > 80) {
+                missions += heartRateMission
+            }
+
+            if (previousDayHealthData.bloodPressureSystolicAvg != null &&
+                previousDayHealthData.bloodPressureSystolicAvg > 140 &&
+                previousDayHealthData.bloodPressureDiastolicAvg != null &&
+                previousDayHealthData.bloodPressureDiastolicAvg > 90
+            ) {
+                missions += bloodPressureMission
+            }
+
         }
         
         return missions[ZonedDateTime.now().dayOfMonth % missions.size]
