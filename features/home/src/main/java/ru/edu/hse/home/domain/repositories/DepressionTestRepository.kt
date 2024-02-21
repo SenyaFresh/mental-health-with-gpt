@@ -1,5 +1,7 @@
 package ru.edu.hse.home.domain.repositories
 
+import kotlinx.coroutines.flow.Flow
+import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.home.domain.entities.DepressionTest
 
 interface DepressionTestRepository {
@@ -7,12 +9,12 @@ interface DepressionTestRepository {
     /**
      * Get depression test.
      */
-    suspend fun getDepressionTest() : DepressionTest
+    fun getDepressionTest() : Flow<ResultContainer<DepressionTest>>
 
     /**
      * Get user's depression points. Returns -1 if user did not pass the test.
      */
-    suspend fun getUserDepressionPoints() : Int
+    fun getUserDepressionPoints() : Flow<ResultContainer<Int>>
 
     /**
      * Update user's depression points.
