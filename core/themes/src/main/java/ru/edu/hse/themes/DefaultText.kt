@@ -8,19 +8,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun DefaultText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = Color.Black,
-    fontWeight: FontWeight = FontWeight.Normal,
+    fontSize: TextUnit = 14.sp,
+    fontWeight: FontWeight = FontWeight.SemiBold,
     fontStyle: FontStyle = FontStyle.Normal
 ) = Text(
     text,
     modifier = modifier,
     color = color,
+    fontSize = fontSize,
     fontFamily = Nunito,
     fontWeight = fontWeight,
     fontStyle = fontStyle

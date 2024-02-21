@@ -63,7 +63,7 @@ fun DefaultTextField(
                     fontWeight = FontWeight.Medium,
                 )
             }
-            HorizontalDivider(thickness = 1.dp, color = onErrorColor)
+            HorizontalDivider(thickness = OutlineThickness, color = onErrorColor)
             OutlinedTextField(
                 modifier = Modifier
                     .height(60.dp)
