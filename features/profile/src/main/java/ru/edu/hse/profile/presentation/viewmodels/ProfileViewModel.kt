@@ -46,7 +46,7 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.EditProfile -> editProfile(profileEvent.profile)
             ProfileEvent.DisableEmailError -> emailErrorStateFlow.value = false
             ProfileEvent.DisableUsernameError -> usernameErrorStateFlow.value = false
-            ProfileEvent.LogoutEvent -> logout()
+            ProfileEvent.Logout -> logout()
         }
     }
 

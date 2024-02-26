@@ -11,7 +11,7 @@ sealed class ProfileEvent {
     /**
      * Log out user from app.
      */
-    data object LogoutEvent : ProfileEvent()
+    data object Logout : ProfileEvent()
 
     /**
      * Disable email error.

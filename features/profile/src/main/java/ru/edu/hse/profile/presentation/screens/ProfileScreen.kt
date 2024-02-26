@@ -102,7 +102,7 @@ fun ProfileScreen(
                 text = "Выйти из аккаунта",
                 containerColor = Color.Transparent,
                 enabled = container.unwrap().enableButtons,
-                onClick = { onEvent(ProfileEvent.LogoutEvent) }
+                onClick = { onEvent(ProfileEvent.Logout) }
             )
 
             if (container.unwrap().showProgressBar) {
