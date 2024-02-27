@@ -3,6 +3,8 @@ package ru.edu.hse.home.presentation.viewmodels
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.edu.hse.common.AuthenticationException
+import ru.edu.hse.common.Core
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.home.domain.entities.DepressionTest
 import ru.edu.hse.home.domain.entities.HealthData
@@ -88,7 +90,11 @@ class HomeViewModel @Inject constructor(
 
     fun updateDepressionPoints(points: Int) {
         viewModelScope.launch {
-            updateDepressionPointsUseCase.updateDepressionPoints(points)
+            try {
+                updateDepressionPointsUseCase.updateDepressionPoints(points)
+            } catch (e: AuthenticationException) {
+                Core.toaster.showToast("Не удалось получить результаты теста.")
+            }
         }
     }
 }

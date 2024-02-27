@@ -21,21 +21,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.edu.hse.themes.DefaultCard
 import ru.edu.hse.themes.DefaultText
 
 
 @Composable
 fun HealthDataItem(
     icon: @Composable () -> Unit,
-    title: String,
     value: String,
     suffix: String,
     modifier: Modifier = Modifier
 ) {
 
-    DefaultCardWithTitle(
-        title = title,
-        modifier = modifier.padding(horizontal = 8.dp)
+    DefaultCard(
+        modifier = modifier.padding(horizontal = 8.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -86,7 +85,6 @@ fun HealthDataItemPreviewPressure() {
                 modifier = Modifier.fillMaxSize()
             )
         },
-        title = "Давление",
         value = "150/100",
         suffix = "мм рт. ст.",
         modifier = Modifier.padding(vertical = 16.dp)
@@ -104,7 +102,6 @@ fun HealthDataItemPreviewPulse() {
                 modifier = Modifier.fillMaxSize()
             )
         },
-        title = "Пульс",
         value = "120",
         suffix = "уд/мин",
         modifier = Modifier.padding(vertical = 16.dp)

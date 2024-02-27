@@ -11,15 +11,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun DefaultCard(
-    modifier: Modifier = Modifier, color: Color = OutlineColor, content: @Composable ColumnScope.() -> Unit
+    modifier: Modifier = Modifier, color: Color = OutlineColor, outlineThickness: Dp = OutlineThickness, content: @Composable ColumnScope.() -> Unit
 ) = Card(
     modifier = modifier,
     border = BorderStroke(
-        width = OutlineThickness,
+        width = outlineThickness,
         color = color
     ),
     elevation = CardDefaults.elevatedCardElevation(0.dp),
