@@ -2,7 +2,6 @@ package ru.edu.hse.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +30,7 @@ fun ResultContainerComposable(
     onSuccess: @Composable () -> Unit
 ) {
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier, contentAlignment = Alignment.Center) {
         when (container) {
             is ResultContainer.Success -> {
                 onSuccess()

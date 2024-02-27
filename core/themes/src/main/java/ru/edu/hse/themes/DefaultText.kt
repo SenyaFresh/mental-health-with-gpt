@@ -19,7 +19,8 @@ fun DefaultText(
     color: Color = Color.Black,
     fontSize: TextUnit = 14.sp,
     fontWeight: FontWeight = FontWeight.SemiBold,
-    fontStyle: FontStyle = FontStyle.Normal
+    fontStyle: FontStyle = FontStyle.Normal,
+    maxLines: Int = 20
 ) = Text(
     text,
     modifier = modifier,
@@ -27,7 +28,8 @@ fun DefaultText(
     fontSize = fontSize,
     fontFamily = Nunito,
     fontWeight = fontWeight,
-    fontStyle = fontStyle
+    fontStyle = fontStyle,
+    maxLines = maxLines
 )
 
 @Preview(showBackground = true)

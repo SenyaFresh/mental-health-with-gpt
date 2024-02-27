@@ -38,26 +38,38 @@ fun HealthDataItem(
         modifier = modifier.padding(horizontal = 8.dp)
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .height(110.dp)
+                .height(80.dp)
                 .fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier
                     .padding(5.dp)
-                    .size(110.dp)
+                    .size(80.dp)
             ) {
                 icon()
             }
 
             Row(
                 verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.padding(bottom = 30.dp, end = 20.dp)
+                modifier = Modifier.padding(bottom = 14.dp, end = 20.dp)
             ) {
-                DefaultText(text = value, fontSize = 60.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.offset(0.dp, 16.dp))
-                DefaultText(text = suffix, fontSize = 20.sp, fontWeight = FontWeight.Light, fontStyle = FontStyle.Italic)
+                DefaultText(
+                    text = value,
+                    fontSize = if (value.length > 4) 46.sp else 56.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = if (value.length > 4) Modifier.offset(0.dp, 12.dp)
+                    else Modifier.offset(0.dp, 4.dp)
+                )
+                DefaultText(
+                    text = suffix,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Light,
+                    fontStyle = FontStyle.Italic,
+                    maxLines = 1
+                )
             }
         }
     }
@@ -67,10 +79,16 @@ fun HealthDataItem(
 @Composable
 fun HealthDataItemPreviewPressure() {
     HealthDataItem(
-        icon = { Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = null, modifier = Modifier.fillMaxSize()) },
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowUp,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        },
         title = "Давление",
         value = "150/100",
-        suffix = "",
+        suffix = "мм рт. ст.",
         modifier = Modifier.padding(vertical = 16.dp)
     )
 }
@@ -79,7 +97,13 @@ fun HealthDataItemPreviewPressure() {
 @Composable
 fun HealthDataItemPreviewPulse() {
     HealthDataItem(
-        icon = { Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = null, modifier = Modifier.fillMaxSize()) },
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.FavoriteBorder,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        },
         title = "Пульс",
         value = "120",
         suffix = "уд/мин",
