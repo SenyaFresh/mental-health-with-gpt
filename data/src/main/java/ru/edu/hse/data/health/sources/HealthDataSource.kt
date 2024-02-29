@@ -2,7 +2,6 @@ package ru.edu.hse.data.health.sources
 
 import androidx.activity.result.contract.ActivityResultContract
 import ru.edu.hse.data.health.entities.HealthDataEntity
-import java.time.Instant
 
 interface HealthDataSource {
 
@@ -29,6 +28,6 @@ interface HealthDataSource {
     /**
      * Get [HealthDataEntity] from database.
      */
-    suspend fun getHealthData(startTime: Instant, finishTime: Instant) : HealthDataEntity
+    suspend fun getHealthData() : HealthDataEntity
 
 }

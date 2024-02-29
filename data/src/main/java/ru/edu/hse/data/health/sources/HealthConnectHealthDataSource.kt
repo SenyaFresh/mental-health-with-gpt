@@ -6,14 +6,16 @@ import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.HealthConnectClient.Companion.SDK_AVAILABLE
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
-import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.records.HeartRateRecord
+import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import ru.edu.hse.data.health.entities.HealthDataEntity
 import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext private val context: Context) :
@@ -24,7 +26,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     override val permissions = setOf(
         HealthPermission.getReadPermission(StepsRecord::class),
         HealthPermission.getReadPermission(HeartRateRecord::class),
-        HealthPermission.getReadPermission(BloodPressureRecord::class)
+        HealthPermission.getReadPermission(SleepSessionRecord::class)
     )
 
     override fun checkInstalled(): Boolean {
@@ -40,28 +42,66 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         return PermissionController.createRequestPermissionResultContract()
     }
 
-    override suspend fun getHealthData(startTime: Instant, finishTime: Instant): HealthDataEntity {
-        val timeRangeFilter = TimeRangeFilter.between(startTime, finishTime)
-        val aggregateDataTypes = setOf(
-            StepsRecord.COUNT_TOTAL,
-            HeartRateRecord.BPM_AVG,
-            BloodPressureRecord.SYSTOLIC_AVG,
-            BloodPressureRecord.DIASTOLIC_AVG
-        )
-
-        val aggregateRequest = AggregateRequest(
-            metrics = aggregateDataTypes,
-            timeRangeFilter = timeRangeFilter
-        )
-
-        val aggregateData = healthConnectClient.aggregate(aggregateRequest)
-
+    override suspend fun getHealthData(): HealthDataEntity {
         return HealthDataEntity(
-            stepsCount = aggregateData[StepsRecord.COUNT_TOTAL],
-            heartRateAvg = aggregateData[HeartRateRecord.BPM_AVG],
-            bloodPressureDiastolicAvg = aggregateData[BloodPressureRecord.DIASTOLIC_AVG]?.inMillimetersOfMercury?.toLong(),
-            bloodPressureSystolicAvg = aggregateData[BloodPressureRecord.SYSTOLIC_AVG]?.inMillimetersOfMercury?.toLong()
+            stepsCount = getStepsData(),
+            heartRateAvg = getHeartRateData(),
+            sleepMinutes = getSleepData()
         )
+    }
+
+    private suspend fun getStepsData() : Long? {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+        val now = Instant.now()
+
+        val stepsTimeRangeFilter = TimeRangeFilter.between(startOfDay, now)
+
+        val stepsAggregateDataTypes = setOf(
+            StepsRecord.COUNT_TOTAL,
+        )
+        val stepsAggregateRequest = AggregateRequest(
+            metrics = stepsAggregateDataTypes,
+            timeRangeFilter = stepsTimeRangeFilter
+        )
+
+        return healthConnectClient.aggregate(stepsAggregateRequest)[StepsRecord.COUNT_TOTAL]
+    }
+
+    private suspend fun getHeartRateData() : Long? {
+        val startOfHour = ZonedDateTime.now().truncatedTo(ChronoUnit.HOURS).toInstant()
+        val startOfPreviousHour = startOfHour.minus(1, ChronoUnit.HOURS)
+
+        val heartRateTimeRangeFilter = TimeRangeFilter.between(startOfPreviousHour, startOfHour)
+
+        val heartRateAggregateDataTypes = setOf(
+            HeartRateRecord.BPM_AVG,
+        )
+
+        val heartRateAggregateRequest = AggregateRequest(
+            metrics = heartRateAggregateDataTypes,
+            timeRangeFilter = heartRateTimeRangeFilter
+        )
+
+        return healthConnectClient.aggregate(heartRateAggregateRequest)[HeartRateRecord.BPM_AVG]
+    }
+
+    private suspend fun getSleepData() : Long? {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+        val previousDay6pm = startOfDay.minus(6, ChronoUnit.HOURS)
+        val thisDay6pm = startOfDay.plus(18, ChronoUnit.HOURS)
+
+        val sleepTimeRangeFilter = TimeRangeFilter.between(previousDay6pm, thisDay6pm)
+
+        val sleepAggregateDataTypes = setOf(
+            SleepSessionRecord.SLEEP_DURATION_TOTAL,
+        )
+
+        val sleepAggregateRequest = AggregateRequest(
+            metrics = sleepAggregateDataTypes,
+            timeRangeFilter = sleepTimeRangeFilter
+        )
+
+        return healthConnectClient.aggregate(sleepAggregateRequest)[SleepSessionRecord.SLEEP_DURATION_TOTAL]?.toMinutes()
     }
 
 }
