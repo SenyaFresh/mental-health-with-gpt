@@ -18,6 +18,8 @@ class RealHealthDataRepository @Inject constructor(
     lazyFlowLoaderFactory: LazyFlowLoaderFactory
 ) : HealthDataRepository {
 
+    private var subscribed = false
+
     private val healthDataLazyFlowLoader = lazyFlowLoaderFactory.create {
         healthDataSource.getHealthData()
     }
@@ -28,8 +30,10 @@ class RealHealthDataRepository @Inject constructor(
     init {
         scope.launch {
             while (isActive) {
-                healthDataLazyFlowLoader.newAsyncLoad()
-                delay(10000)
+                if (subscribed) {
+                    healthDataLazyFlowLoader.newAsyncLoad(silently = true)
+                }
+                delay(60000)
             }
         }
     }
@@ -42,6 +46,7 @@ class RealHealthDataRepository @Inject constructor(
         healthDataSource.requestPermissionActivityContract()
 
     override suspend fun getHealthData(): Flow<ResultContainer<HealthDataEntity>> {
+        subscribed = true
         return healthDataLazyFlowLoader.listen()
     }
 

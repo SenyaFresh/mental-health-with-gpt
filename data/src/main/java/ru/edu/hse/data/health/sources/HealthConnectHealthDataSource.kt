@@ -11,7 +11,13 @@ import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.time.TimeRangeFilter
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.tasks.await
+import ru.edu.hse.common.AuthenticationException
+import ru.edu.hse.common.Core
 import ru.edu.hse.data.health.entities.HealthDataEntity
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -22,6 +28,12 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     HealthDataSource {
 
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
+
+    private val auth = Firebase.auth
+
+    private val db = Firebase.firestore
+
+    private val logger = Core.logger
 
     override val permissions = setOf(
         HealthPermission.getReadPermission(StepsRecord::class),
@@ -43,11 +55,19 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     }
 
     override suspend fun getHealthData(): HealthDataEntity {
-        return HealthDataEntity(
+        if (fetchedData()) {
+            for (i in (0..365)) {
+
+            }
+        }
+
+        val healthData = HealthDataEntity(
             stepsCount = getStepsData(),
             heartRateAvg = getHeartRateData(),
             sleepMinutes = getSleepData()
         )
+
+        return healthData
     }
 
     private suspend fun getStepsData() : Long? {
@@ -102,6 +122,31 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         )
 
         return healthConnectClient.aggregate(sleepAggregateRequest)[SleepSessionRecord.SLEEP_DURATION_TOTAL]?.toMinutes()
+    }
+
+    private suspend fun fetchedData() : Boolean {
+        val db = Firebase.firestore
+        val auth = Firebase.auth
+        return try {
+            val document = db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .get()
+                .await()
+            document[KEY_FETCHED_DATA] as Boolean
+        } catch (e: Exception) {
+            logger.log("getFetchedData:failure")
+            throw AuthenticationException()
+        }
+    }
+
+    companion object {
+        const val USERS_COLLECTION = "users"
+
+        const val KEY_FETCHED_DATA = "fetchedData"
+
+        const val STEPS_COLLECTION = "steps"
+        const val HEART_RATE_COLLECTION = "heartRate"
+        const val SLEEP_COLLECTION = "sleep"
     }
 
 }

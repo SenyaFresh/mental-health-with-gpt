@@ -55,7 +55,8 @@ class FirebaseAccountsDataSource : AccountsDataSource {
                 if (authTask.isSuccessful) {
                     val firestoreSignUpData = hashMapOf(
                         KEY_EMAIL to signUpData.email,
-                        KEY_USERNAME to signUpData.username
+                        KEY_USERNAME to signUpData.username,
+                        KEY_FETCHED_DATA to true
                     )
 
                     db.collection(USERS_COLLECTION)
@@ -142,6 +143,7 @@ class FirebaseAccountsDataSource : AccountsDataSource {
 
         const val KEY_EMAIL = "email"
         const val KEY_USERNAME = "username"
+        const val KEY_FETCHED_DATA = "fetchedData"
         const val KEY_DEPRESSION_POINTS = "depressionPoints"
     }
 
