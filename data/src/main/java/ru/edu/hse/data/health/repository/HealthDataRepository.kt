@@ -1,6 +1,8 @@
 package ru.edu.hse.data.health.repository
 
 import androidx.activity.result.contract.ActivityResultContract
+import kotlinx.coroutines.flow.Flow
+import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.data.health.entities.HealthDataEntity
 
 interface HealthDataRepository {
@@ -27,7 +29,7 @@ interface HealthDataRepository {
     /**
      * Get up-to-date [HealthDataEntity] from repository.
      */
-    suspend fun getHealthData() : HealthDataEntity
+    suspend fun getHealthData() : Flow<ResultContainer<HealthDataEntity>>
 
     /**
      * Get everyday mission from repository.
