@@ -7,6 +7,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.tasks.await
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
 import ru.edu.hse.data.accounts.entities.AccountDataEntity
@@ -34,72 +35,49 @@ class FirebaseAccountsDataSource : AccountsDataSource {
     }
 
     override suspend fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                signInCompletion(task.isSuccessful)
-            }
-    }
-
-    private fun signInCompletion(isSuccessful: Boolean) {
-        if (isSuccessful) {
+        try {
+            auth.signInWithEmailAndPassword(email, password).await()
             logger.log("signIn:success")
-        } else {
-            logger.log("signIn:failure")
+        } catch (e: Exception) {
+            logger.logError(e, "signIn:failure")
             throw AuthenticationException()
         }
     }
 
     override suspend fun signUp(signUpData: SignUpDataEntity) {
-        auth.createUserWithEmailAndPassword(signUpData.email, signUpData.password)
-            .addOnCompleteListener { authTask ->
-                if (authTask.isSuccessful) {
-                    val firestoreSignUpData = hashMapOf(
-                        KEY_EMAIL to signUpData.email,
-                        KEY_USERNAME to signUpData.username,
-                        KEY_FETCHED_DATA to true
-                    )
+        try {
+            auth.createUserWithEmailAndPassword(signUpData.email, signUpData.password).await()
+            val firestoreSignUpData = hashMapOf(
+                KEY_EMAIL to signUpData.email,
+                KEY_USERNAME to signUpData.username,
+                KEY_FETCHED_DATA to false
+            )
 
-                    db.collection(USERS_COLLECTION)
-                        .document(auth.currentUser!!.uid)
-                        .set(firestoreSignUpData)
-                        .addOnCompleteListener { dbTask ->
-                            signUpCompletion(dbTask.isSuccessful)
-                        }
-                } else {
-                    if (authTask.exception is FirebaseAuthUserCollisionException) {
-                        logger.log("signUp:failure")
-                        throw AccountAlreadyExistsDataException()
-                    }
-                    signUpCompletion(false)
-                }
-            }
-    }
-
-    private fun signUpCompletion(isSuccessful: Boolean) {
-        if (isSuccessful) {
+            db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .set(firestoreSignUpData)
+                .await()
             logger.log("signUp:success")
-        } else {
-            logger.log("signUp:failure")
+        } catch (e: FirebaseAuthUserCollisionException) {
+            logger.logError(e, "signUp:failure")
+            throw AccountAlreadyExistsDataException()
+        } catch (e: Exception) {
+            logger.logError(e, "signUp:failure")
             throw AuthenticationException()
         }
     }
 
     override suspend fun getAccount(): AccountDataEntity {
         val user = auth.currentUser ?: throw AuthenticationException()
-        var accountDataEntity: AccountDataEntity? = null
 
-        db.collection(USERS_COLLECTION)
-            .document(user.uid)
-            .get()
-            .addOnSuccessListener {
-                logger.log("getAccount:success")
-                accountDataEntity = it.toObject(AccountDataEntity::class.java)
-            }
-            .addOnFailureListener {
-                logger.log("getAccount:failure")
-                throw AuthenticationException()
-            }
-        return accountDataEntity!!
+        return try {
+            val documentSnapshot = db.collection(USERS_COLLECTION).document(user.uid).get().await()
+            val accountDataEntity = documentSnapshot.toObject(AccountDataEntity::class.java)
+            accountDataEntity ?: throw AuthenticationException()
+        } catch (e: Exception) {
+            logger.logError(e, "getAccount:failure")
+            throw AuthenticationException()
+        }
     }
 
     override suspend fun updateAccount(
@@ -114,24 +92,22 @@ class FirebaseAccountsDataSource : AccountsDataSource {
         email?.let { firestoreAccountUpdateData[KEY_EMAIL] = it }
         depressionPoints?.let { firestoreAccountUpdateData[KEY_DEPRESSION_POINTS] = it }
 
-        db.collection(USERS_COLLECTION)
-            .document(auth.currentUser!!.uid)
-            .set(firestoreAccountUpdateData, SetOptions.merge())
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    logger.log("updateAccount:success")
-                    accountDataEntity = accountDataEntity.copy(
-                        email = email ?: accountDataEntity.email,
-                        username = username ?: accountDataEntity.username,
-                        depressionPoints = depressionPoints ?: accountDataEntity.depressionPoints,
-                    )
-                } else {
-                    logger.log("updateAccount:failure")
-                    throw AuthenticationException()
-                }
-            }
-
-        return accountDataEntity
+        return try {
+            db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .set(firestoreAccountUpdateData, SetOptions.merge())
+                .await()
+            logger.log("updateAccount:success")
+            accountDataEntity = accountDataEntity.copy(
+                email = email ?: accountDataEntity.email,
+                username = username ?: accountDataEntity.username,
+                depressionPoints = depressionPoints ?: accountDataEntity.depressionPoints,
+            )
+            accountDataEntity
+        } catch (e: Exception) {
+            logger.logError(e, "updateAccount:failure")
+            throw AuthenticationException()
+        }
     }
 
     override suspend fun logout() {

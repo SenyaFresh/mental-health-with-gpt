@@ -56,7 +56,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     }
 
     override suspend fun getHealthData(): HealthDataEntity {
-        if (!fetchedData()) {
+        if (!getFetchedDataFlag()) {
             setPastYearData()
         }
 
@@ -83,7 +83,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
                 .await()
             logger.log("setFetchedDataFlag:success")
         } catch (e: Exception) {
-            logger.log("setFetchedDataFlag:failure")
+            logger.logError(e, "setFetchedDataFlag:failure")
             throw AuthenticationException()
         }
     }
@@ -110,7 +110,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
                 .await()
             logger.log("setStepsData:success")
         } catch (e: Exception) {
-            logger.log("setStepsData:failure")
+            logger.logError(e, "setStepsData:failure")
             throw AuthenticationException()
         }
     }
@@ -137,7 +137,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
                 .await()
             logger.log("setHeartRateData:success")
         } catch (e: Exception) {
-            logger.log("setHeartRateData:failure")
+            logger.logError(e, "setHeartRateData:failure")
             throw AuthenticationException()
         }
     }
@@ -165,7 +165,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
                 .await()
             logger.log("setSleepData:success")
         } catch (e: Exception) {
-            logger.log("setSleepData:failure")
+            logger.logError(e, "setSleepData:failure")
             throw AuthenticationException()
         }
     }
@@ -224,7 +224,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         return healthConnectClient.aggregate(sleepAggregateRequest)[SleepSessionRecord.SLEEP_DURATION_TOTAL]?.toMinutes()
     }
 
-    private suspend fun fetchedData(): Boolean {
+    private suspend fun getFetchedDataFlag(): Boolean {
         val db = Firebase.firestore
         val auth = Firebase.auth
         return try {
@@ -235,7 +235,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
             logger.log("getFetchedDataFlag:success")
             document[KEY_FETCHED_DATA] as Boolean
         } catch (e: Exception) {
-            logger.log("getFetchedDataFlag:failure")
+            logger.logError(e, "getFetchedDataFlag:failure")
             throw AuthenticationException()
         }
     }
