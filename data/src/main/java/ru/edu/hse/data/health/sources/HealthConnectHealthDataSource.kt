@@ -13,6 +13,7 @@ import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
@@ -55,10 +56,8 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     }
 
     override suspend fun getHealthData(): HealthDataEntity {
-        if (fetchedData()) {
-            for (i in (0..365)) {
-
-            }
+        if (!fetchedData()) {
+            setPastYearData()
         }
 
         val healthData = HealthDataEntity(
@@ -66,15 +65,116 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
             heartRateAvg = getHeartRateData(),
             sleepMinutes = getSleepData()
         )
+        setStepsDataForLastDays(1)
+        setHeartRateDataForLastHours(1)
+        setSleepDataForLastDays(1)
 
         return healthData
     }
 
-    private suspend fun getStepsData() : Long? {
-        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
-        val now = Instant.now()
+    private suspend fun setPastYearData() {
+        setStepsDataForLastDays(365)
+        setHeartRateDataForLastHours(365 * 24)
+        setSleepDataForLastDays(365)
+        try {
+            db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .set(hashMapOf<String, Any>(KEY_FETCHED_DATA to true), SetOptions.merge())
+                .await()
+            logger.log("setFetchedDataFlag:success")
+        } catch (e: Exception) {
+            logger.log("setFetchedDataFlag:failure")
+            throw AuthenticationException()
+        }
+    }
 
-        val stepsTimeRangeFilter = TimeRangeFilter.between(startOfDay, now)
+    private suspend fun setStepsDataForLastDays(days: Long) {
+        val stepsRecordData = HashMap<String, Any>()
+        for (i in (0 until days)) {
+            val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+                .minus(i, ChronoUnit.DAYS)
+            val startOfPreviousDay = startOfDay.minus(1, ChronoUnit.DAYS)
+            stepsRecordData["$startOfPreviousDay-$startOfDay"] =
+                getStepsData(startOfPreviousDay, startOfDay) ?: 0
+        }
+        setStepsData(stepsRecordData)
+    }
+
+    private suspend fun setStepsData(stepsRecordData: HashMap<String, Any>) {
+        try {
+            db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .collection(HEALTH_COLLECTION)
+                .document(STEPS_KEY)
+                .set(stepsRecordData, SetOptions.merge())
+                .await()
+            logger.log("setStepsData:success")
+        } catch (e: Exception) {
+            logger.log("setStepsData:failure")
+            throw AuthenticationException()
+        }
+    }
+
+    private suspend fun setHeartRateDataForLastHours(hours: Long) {
+        val heartRateRecordData = HashMap<String, Any>()
+        for (i in (0 until hours)) {
+            val endInstant = ZonedDateTime.now().truncatedTo(ChronoUnit.HOURS).toInstant()
+                .minus(i, ChronoUnit.HOURS)
+            val startInstant = endInstant.minus(1, ChronoUnit.HOURS)
+            heartRateRecordData["$startInstant-$endInstant"] =
+                getHeartRateData(startInstant, endInstant) ?: 0
+        }
+        setHeartRateData(heartRateRecordData)
+    }
+
+    private suspend fun setHeartRateData(heartRateRecordData: HashMap<String, Any>) {
+        try {
+            db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .collection(HEALTH_COLLECTION)
+                .document(HEART_RATE_KEY)
+                .set(heartRateRecordData, SetOptions.merge())
+                .await()
+            logger.log("setHeartRateData:success")
+        } catch (e: Exception) {
+            logger.log("setHeartRateData:failure")
+            throw AuthenticationException()
+        }
+    }
+
+    private suspend fun setSleepDataForLastDays(days: Long) {
+        val sleepRecordData = HashMap<String, Any>()
+        for (i in (0 until days)) {
+            val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+                .minus(i, ChronoUnit.DAYS)
+            val startInstant = startOfDay.minus(6, ChronoUnit.HOURS)
+            val endInstant = startOfDay.plus(18, ChronoUnit.HOURS)
+            sleepRecordData["$startInstant-$endInstant"] =
+                getSleepData(startInstant, endInstant) ?: 0
+        }
+        setSleepData(sleepRecordData)
+    }
+
+    private suspend fun setSleepData(sleepRecordData: HashMap<String, Any>) {
+        try {
+            db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .collection(HEALTH_COLLECTION)
+                .document(SLEEP_KEY)
+                .set(sleepRecordData, SetOptions.merge())
+                .await()
+            logger.log("setSleepData:success")
+        } catch (e: Exception) {
+            logger.log("setSleepData:failure")
+            throw AuthenticationException()
+        }
+    }
+
+    private suspend fun getStepsData(start: Instant? = null, end: Instant? = null): Long? {
+        val startInstant = start ?: ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
+        val endInstant = end ?: Instant.now()
+
+        val stepsTimeRangeFilter = TimeRangeFilter.between(startInstant, endInstant)
 
         val stepsAggregateDataTypes = setOf(
             StepsRecord.COUNT_TOTAL,
@@ -87,11 +187,11 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         return healthConnectClient.aggregate(stepsAggregateRequest)[StepsRecord.COUNT_TOTAL]
     }
 
-    private suspend fun getHeartRateData() : Long? {
-        val startOfHour = ZonedDateTime.now().truncatedTo(ChronoUnit.HOURS).toInstant()
-        val startOfPreviousHour = startOfHour.minus(1, ChronoUnit.HOURS)
+    private suspend fun getHeartRateData(start: Instant? = null, end: Instant? = null): Long? {
+        val startInstant = start ?: ZonedDateTime.now().truncatedTo(ChronoUnit.HOURS).toInstant()
+        val endInstant = end ?: startInstant.minus(1, ChronoUnit.HOURS)
 
-        val heartRateTimeRangeFilter = TimeRangeFilter.between(startOfPreviousHour, startOfHour)
+        val heartRateTimeRangeFilter = TimeRangeFilter.between(endInstant, startInstant)
 
         val heartRateAggregateDataTypes = setOf(
             HeartRateRecord.BPM_AVG,
@@ -105,12 +205,12 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         return healthConnectClient.aggregate(heartRateAggregateRequest)[HeartRateRecord.BPM_AVG]
     }
 
-    private suspend fun getSleepData() : Long? {
+    private suspend fun getSleepData(start: Instant? = null, end: Instant? = null): Long? {
         val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).toInstant()
-        val previousDay6pm = startOfDay.minus(6, ChronoUnit.HOURS)
-        val thisDay6pm = startOfDay.plus(18, ChronoUnit.HOURS)
+        val startInstant = start ?: startOfDay.minus(6, ChronoUnit.HOURS)
+        val endInstant = end ?: startOfDay.plus(18, ChronoUnit.HOURS)
 
-        val sleepTimeRangeFilter = TimeRangeFilter.between(previousDay6pm, thisDay6pm)
+        val sleepTimeRangeFilter = TimeRangeFilter.between(startInstant, endInstant)
 
         val sleepAggregateDataTypes = setOf(
             SleepSessionRecord.SLEEP_DURATION_TOTAL,
@@ -124,7 +224,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         return healthConnectClient.aggregate(sleepAggregateRequest)[SleepSessionRecord.SLEEP_DURATION_TOTAL]?.toMinutes()
     }
 
-    private suspend fun fetchedData() : Boolean {
+    private suspend fun fetchedData(): Boolean {
         val db = Firebase.firestore
         val auth = Firebase.auth
         return try {
@@ -132,9 +232,10 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
                 .document(auth.currentUser!!.uid)
                 .get()
                 .await()
+            logger.log("getFetchedDataFlag:success")
             document[KEY_FETCHED_DATA] as Boolean
         } catch (e: Exception) {
-            logger.log("getFetchedData:failure")
+            logger.log("getFetchedDataFlag:failure")
             throw AuthenticationException()
         }
     }
@@ -142,11 +243,13 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     companion object {
         const val USERS_COLLECTION = "users"
 
-        const val KEY_FETCHED_DATA = "fetchedData"
+        const val KEY_FETCHED_DATA = "fetchedDataFlag"
 
-        const val STEPS_COLLECTION = "steps"
-        const val HEART_RATE_COLLECTION = "heartRate"
-        const val SLEEP_COLLECTION = "sleep"
+        const val HEALTH_COLLECTION = "health"
+
+        const val STEPS_KEY = "health"
+        const val HEART_RATE_KEY = "heartRate"
+        const val SLEEP_KEY = "sleep"
     }
 
 }
