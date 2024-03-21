@@ -7,36 +7,46 @@ import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.common.flow.LazyFlowLoaderFactory
 import ru.edu.hse.data.RemoteConfigManager
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
+import ru.edu.hse.data.mental.test.entities.MentalTestQuestionEntity
 import ru.edu.hse.data.mental.test.exceptions.MentalTestRepositoryException
+import ru.edu.hse.data.mental.test.source.MentalTestDataSource
 import javax.inject.Inject
 
 class RealMentalTestDataRepository @Inject constructor(
+    private val source: MentalTestDataSource,
     scope: CoroutineScope,
     lazyFlowLoaderFactory: LazyFlowLoaderFactory
 ) : MentalTestDataRepository {
 
-    private val depressionTestLazyFlowLoader = lazyFlowLoaderFactory.create {
-        RemoteConfigManager.getMentalTest()
+    private val mentalTestLazyFlowLoader = lazyFlowLoaderFactory.create {
+        source.getMentalTest()
     }
 
     init {
         scope.launch {
             RemoteConfigManager.remoteConfigUpdates.collect {
                 if (it == null) {
-                    depressionTestLazyFlowLoader.update(
-                        ResultContainer.Error(
-                            MentalTestRepositoryException()
-                        )
+                    mentalTestLazyFlowLoader.update(
+                        ResultContainer.Error(MentalTestRepositoryException())
                     )
                 } else {
-                    depressionTestLazyFlowLoader.newAsyncLoad(silently = true)
+                    mentalTestLazyFlowLoader.newAsyncLoad(silently = true)
                 }
             }
         }
     }
 
-    override fun getDepressionTest(): Flow<ResultContainer<MentalTestDataEntity>> {
-        return depressionTestLazyFlowLoader.listen()
+    override fun getMentalTest(): Flow<ResultContainer<MentalTestDataEntity>> {
+        return mentalTestLazyFlowLoader.listen()
+    }
+
+    override suspend fun setMentalTestAnswer(mentalQuestion: MentalTestQuestionEntity, answer: String) {
+        source.setMentalTestAnswer(mentalQuestion, answer)
+    }
+
+    companion object {
+        const val USERS_COLLECTION = "users"
+        const val ANSWERS_COLLECTION = "answers"
     }
 
 }

@@ -1,16 +1,14 @@
-package ru.edu.hse.data.mental.test.repository
+package ru.edu.hse.data.mental.test.source
 
-import kotlinx.coroutines.flow.Flow
-import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
 import ru.edu.hse.data.mental.test.entities.MentalTestQuestionEntity
 
-interface MentalTestDataRepository {
+interface MentalTestDataSource {
 
     /**
      * Get depression test.
      */
-    fun getMentalTest() : Flow<ResultContainer<MentalTestDataEntity>>
+    fun getMentalTest(): MentalTestDataEntity
 
     /**
      * Set mental test answer.
