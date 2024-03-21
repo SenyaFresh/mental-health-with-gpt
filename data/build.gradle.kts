@@ -53,8 +53,13 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
 
+    // firebase
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-firestore:24.10.2")
+    implementation("com.google.firebase:firebase-config:21.6.3")
+
+    // gson
+    implementation("com.google.code.gson:gson:2.8.6")
 
     api(project(":core:common"))
 
