@@ -10,10 +10,10 @@ import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
 import ru.edu.hse.data.mental.test.exceptions.MentalTestRepositoryException
 import javax.inject.Inject
 
-class RealDepressionTestDataRepository @Inject constructor(
+class RealMentalTestDataRepository @Inject constructor(
     scope: CoroutineScope,
     lazyFlowLoaderFactory: LazyFlowLoaderFactory
-) : DepressionTestDataRepository {
+) : MentalTestDataRepository {
 
     private val depressionTestLazyFlowLoader = lazyFlowLoaderFactory.create {
         RemoteConfigManager.getMentalTest()

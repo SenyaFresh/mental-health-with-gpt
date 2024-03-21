@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
 
-interface DepressionTestDataRepository {
+interface MentalTestDataRepository {
 
     /**
      * Get depression test.
