@@ -14,8 +14,8 @@ interface MentalTestDataRepositoriesModule {
 
     @Binds
     @Singleton
-    fun bindDepressionTestDataRepository(
-        depressionTestDataRepository: RealMentalTestDataRepository
+    fun bindMentalTestDataRepository(
+        mentalTestDataRepository: RealMentalTestDataRepository
     ): MentalTestDataRepository
 
 }
