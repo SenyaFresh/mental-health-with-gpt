@@ -1,6 +1,8 @@
 package ru.edu.hse.data.health.sources
 
 import androidx.activity.result.contract.ActivityResultContract
+import ru.edu.hse.data.health.entities.EverydayMissionDataEntity
+import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
 import ru.edu.hse.data.health.entities.HealthDataEntity
 
 interface HealthDataSource {
@@ -30,4 +32,14 @@ interface HealthDataSource {
      */
     suspend fun getHealthData() : HealthDataEntity
 
+
+    /**
+     * Get list of everyday missions from database.
+     */
+    suspend fun getEverydayMissions() : EverydayMissionsListDataEntity
+
+    /**
+     * Set mission completed flag to true in database.
+     */
+    suspend fun setMissionCompletion(mission: EverydayMissionDataEntity)
 }

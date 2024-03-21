@@ -19,6 +19,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
+import ru.edu.hse.data.RemoteConfigManager
+import ru.edu.hse.data.health.entities.EverydayMissionDataEntity
+import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
 import ru.edu.hse.data.health.entities.HealthDataEntity
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -70,6 +73,48 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         setSleepDataForLastDays(1)
 
         return healthData
+    }
+
+    override suspend fun getEverydayMissions(): EverydayMissionsListDataEntity {
+        var missions = RemoteConfigManager.getEverydayMissionsList(auth.currentUser!!.uid)
+        if (missions.missionsList.isEmpty()) return missions
+        try {
+            val documentSnapshot = db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .collection(MISSIONS_COLLECTION)
+                .document(missions.missionsList[0].date)
+                .get()
+                .await()
+
+            val missionsFbEntity = documentSnapshot.data ?: emptyMap()
+
+            val newMissions = missions.missionsList.map { mission ->
+                mission.copy(completed = missionsFbEntity[mission.text] as? Boolean ?: false)
+            }
+
+            missions = missions.copy(missionsList = newMissions)
+            logger.log("getMissionsList:success")
+            return missions
+        } catch (e: Exception) {
+            logger.logError(e, "getMissionsList:failure")
+            throw AuthenticationException()
+        }
+    }
+
+    override suspend fun setMissionCompletion(mission: EverydayMissionDataEntity) {
+        try {
+            db.collection(USERS_COLLECTION)
+                .document(auth.currentUser!!.uid)
+                .collection(MISSIONS_COLLECTION)
+                .document(mission.date)
+                .set(hashMapOf<String, Any>(mission.text to mission.completed))
+                .await()
+
+            logger.log("setMissionCompletion:success")
+        } catch (e: Exception) {
+            logger.logError(e, "setMissionCompletion:failure")
+            throw AuthenticationException()
+        }
     }
 
     private suspend fun setPastYearData() {
@@ -246,8 +291,9 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         const val KEY_FETCHED_DATA = "fetchedDataFlag"
 
         const val HEALTH_COLLECTION = "health"
+        const val MISSIONS_COLLECTION = "missions"
 
-        const val STEPS_KEY = "health"
+        const val STEPS_KEY = "steps"
         const val HEART_RATE_KEY = "heartRate"
         const val SLEEP_KEY = "sleep"
     }

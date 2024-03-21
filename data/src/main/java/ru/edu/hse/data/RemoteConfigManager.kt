@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.edu.hse.common.Core
+import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
 import ru.edu.hse.data.mental.test.exceptions.MentalTestRepositoryException
 
@@ -48,6 +49,18 @@ object RemoteConfigManager {
             return mentalTest
         } catch (e: Exception) {
             logger.logError(e, "remoteConfigUpdate:failure")
+            throw MentalTestRepositoryException()
+        }
+    }
+
+    fun getEverydayMissionsList(uid: String): EverydayMissionsListDataEntity {
+        val json = firebaseRemoteConfig.getString(uid)
+        try {
+            val missions = gson.fromJson(json, EverydayMissionsListDataEntity::class.java)
+            logger.log("getEverydayMissionsList:success")
+            return missions
+        } catch (e: Exception) {
+            logger.logError(e, "getEverydayMissionsList:failure")
             throw MentalTestRepositoryException()
         }
     }

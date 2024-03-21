@@ -3,6 +3,8 @@ package ru.edu.hse.data.health.repository
 import androidx.activity.result.contract.ActivityResultContract
 import kotlinx.coroutines.flow.Flow
 import ru.edu.hse.common.ResultContainer
+import ru.edu.hse.data.health.entities.EverydayMissionDataEntity
+import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
 import ru.edu.hse.data.health.entities.HealthDataEntity
 
 interface HealthDataRepository {
@@ -34,5 +36,10 @@ interface HealthDataRepository {
     /**
      * Get everyday mission from repository.
      */
-    suspend fun getEverydayMission() : String
+    suspend fun getEverydayMissions() : Flow<ResultContainer<EverydayMissionsListDataEntity>>
+
+    /**
+     * Set completion to [mission].
+     */
+    suspend fun setMissionCompletion(mission: EverydayMissionDataEntity)
 }

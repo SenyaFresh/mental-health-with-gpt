@@ -8,6 +8,8 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.common.flow.LazyFlowLoaderFactory
+import ru.edu.hse.data.health.entities.EverydayMissionDataEntity
+import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
 import ru.edu.hse.data.health.entities.HealthDataEntity
 import ru.edu.hse.data.health.sources.HealthDataSource
 import javax.inject.Inject
@@ -22,6 +24,10 @@ class RealHealthDataRepository @Inject constructor(
 
     private val healthDataLazyFlowLoader = lazyFlowLoaderFactory.create {
         healthDataSource.getHealthData()
+    }
+
+    private val everydayMissionsLazyFlowLoader = lazyFlowLoaderFactory.create {
+        healthDataSource.getEverydayMissions()
     }
 
     override val permissions: Set<String>
@@ -50,8 +56,12 @@ class RealHealthDataRepository @Inject constructor(
         return healthDataLazyFlowLoader.listen()
     }
 
-    override suspend fun getEverydayMission(): String {
-        // TODO
-        return ""
+    override suspend fun getEverydayMissions(): Flow<ResultContainer<EverydayMissionsListDataEntity>> {
+        return everydayMissionsLazyFlowLoader.listen()
     }
+
+    override suspend fun setMissionCompletion(mission: EverydayMissionDataEntity) {
+        healthDataSource.setMissionCompletion(mission)
+    }
+
 }
