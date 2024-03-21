@@ -3,26 +3,23 @@ package ru.edu.hse.home.presentation.viewmodels
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import ru.edu.hse.common.AuthenticationException
-import ru.edu.hse.common.Core
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.home.domain.entities.DepressionTest
+import ru.edu.hse.home.domain.entities.EverydayMissionsListEntity
 import ru.edu.hse.home.domain.entities.HealthData
-import ru.edu.hse.home.domain.usecases.GetDepressionPointsUseCase
-import ru.edu.hse.home.domain.usecases.GetDepressionTestUseCase
-import ru.edu.hse.home.domain.usecases.GetEverydayMissionUseCase
+import ru.edu.hse.home.domain.entities.MentalTestEntity
+import ru.edu.hse.home.domain.usecases.GetEverydayMissionsUseCase
 import ru.edu.hse.home.domain.usecases.GetHealthDataUseCase
+import ru.edu.hse.home.domain.usecases.GetMentalTestUseCase
 import ru.edu.hse.home.domain.usecases.GetPermissionsUseCase
-import ru.edu.hse.home.domain.usecases.UpdateDepressionPointsUseCase
+import ru.edu.hse.home.domain.usecases.SetMissionCompletionUseCase
 import ru.edu.hse.presentation.BaseViewModel
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val getDepressionTestUseCase: GetDepressionTestUseCase,
-    private val getDepressionPointsUseCase: GetDepressionPointsUseCase,
-    private val getEverydayMissionUseCase: GetEverydayMissionUseCase,
+    private val getMentalTestUseCase: GetMentalTestUseCase,
+    private val getEverydayMissionsUseCase: GetEverydayMissionsUseCase,
+    private val setMissionCompletionUseCase: SetMissionCompletionUseCase,
     private val getHealthDataUseCase: GetHealthDataUseCase,
-    private val updateDepressionPointsUseCase: UpdateDepressionPointsUseCase,
     getPermissionsUseCase: GetPermissionsUseCase
 ) : BaseViewModel() {
 
@@ -34,67 +31,41 @@ class HomeViewModel @Inject constructor(
     val healthDataStateFlow = _healthDataStateFlow.asStateFlow()
 
     private val _everydayMissionStateFlow =
-        MutableStateFlow<ResultContainer<String>>(ResultContainer.Pending)
+        MutableStateFlow<ResultContainer<EverydayMissionsListEntity>>(ResultContainer.Pending)
     val everydayMissionStateFlow = _everydayMissionStateFlow.asStateFlow()
 
-    private val _depressionStatsStateFlow =
-        MutableStateFlow<ResultContainer<Int>>(ResultContainer.Pending)
-    val depressionStatsStateFlow = _depressionStatsStateFlow.asStateFlow()
-
-    private val _depressionTestStateFlow =
-        MutableStateFlow<ResultContainer<DepressionTest>>(ResultContainer.Pending)
-    val depressionsTestStateFlow = _depressionTestStateFlow.asStateFlow()
+    private val _mentalTestStateFlow =
+        MutableStateFlow<ResultContainer<MentalTestEntity>>(ResultContainer.Pending)
+    val mentalTestStateFlow = _mentalTestStateFlow.asStateFlow()
 
     init {
-        loadHealthData()
-        loadEverydayMission()
-        loadDepressionStats()
-        loadDepressionTest()
+        collectHealthData()
+        collectEverydayMissions()
+        collectMentalTest()
     }
 
-    private fun loadHealthData() = viewModelScope.launch {
-        try {
-            _healthDataStateFlow.value = ResultContainer.Pending
-            _healthDataStateFlow.value =
-                ResultContainer.Success(getHealthDataUseCase.getHealthData())
-        } catch (e: Exception) {
-            _healthDataStateFlow.value = ResultContainer.Error(e)
-        }
-    }
-
-    fun loadHealthDataWithDebounce() = debounce { loadHealthData() }
-
-    private fun loadEverydayMission() = viewModelScope.launch {
-        try {
-            _everydayMissionStateFlow.value = ResultContainer.Pending
-            _everydayMissionStateFlow.value =
-                ResultContainer.Success(getEverydayMissionUseCase.getEveryDayMission())
-        } catch (e: Exception) {
-            _everydayMissionStateFlow.value = ResultContainer.Error(e)
-        }
-    }
-
-    fun loadEverydayMissionWithDebounce() = debounce { loadEverydayMission() }
-
-    private fun loadDepressionStats() = viewModelScope.launch {
-        getDepressionPointsUseCase.getDepressionPoints().collect {
-            _depressionStatsStateFlow.value = it
-        }
-    }
-
-    private fun loadDepressionTest() = viewModelScope.launch {
-        getDepressionTestUseCase.getDepressionTest().collect {
-            _depressionTestStateFlow.value = it
-        }
-    }
-
-    fun updateDepressionPoints(points: Int) {
+    private fun collectHealthData() {
         viewModelScope.launch {
-            try {
-                updateDepressionPointsUseCase.updateDepressionPoints(points)
-            } catch (e: AuthenticationException) {
-                Core.toaster.showToast("Не удалось получить результаты теста.")
+            getHealthDataUseCase.getHealthData().collect { result ->
+                _healthDataStateFlow.value = result
             }
         }
     }
+
+    private fun collectEverydayMissions() {
+        viewModelScope.launch {
+            getEverydayMissionsUseCase.getEverydayMissions().collect { result ->
+                _everydayMissionStateFlow.value = result
+            }
+        }
+    }
+
+    private fun collectMentalTest() {
+        viewModelScope.launch {
+            getMentalTestUseCase.getMentalTest().collect { result ->
+                _mentalTestStateFlow.value = result
+            }
+        }
+    }
+
 }

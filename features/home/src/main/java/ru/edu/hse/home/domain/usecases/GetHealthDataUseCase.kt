@@ -1,5 +1,7 @@
 package ru.edu.hse.home.domain.usecases
 
+import kotlinx.coroutines.flow.Flow
+import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.home.domain.entities.HealthData
 import ru.edu.hse.home.domain.exceptions.HealthConnectNotInstalledException
 import ru.edu.hse.home.domain.exceptions.PermissionsNotGrantedException
@@ -10,7 +12,7 @@ class GetHealthDataUseCase @Inject constructor(
     private val healthRepository: HealthRepository
 ) {
 
-    suspend fun getHealthData() : HealthData {
+    suspend fun getHealthData() : Flow<ResultContainer<HealthData>> {
 
         if (!healthRepository.checkInstalled()) {
             throw HealthConnectNotInstalledException()

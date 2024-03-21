@@ -3,7 +3,7 @@ package ru.edu.hse.data.mental.test.repository
 import kotlinx.coroutines.flow.Flow
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
-import ru.edu.hse.data.mental.test.entities.MentalTestQuestionEntity
+import ru.edu.hse.data.mental.test.entities.MentalTestQuestionDataEntity
 
 interface MentalTestDataRepository {
 
@@ -15,6 +15,6 @@ interface MentalTestDataRepository {
     /**
      * Set mental test answer.
      */
-    suspend fun setMentalTestAnswer(mentalQuestion: MentalTestQuestionEntity, answer: String)
+    suspend fun setMentalTestAnswer(mentalQuestion: MentalTestQuestionDataEntity, answer: String)
 
 }

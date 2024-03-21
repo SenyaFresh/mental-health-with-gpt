@@ -7,7 +7,7 @@ import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.common.flow.LazyFlowLoaderFactory
 import ru.edu.hse.data.RemoteConfigManager
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
-import ru.edu.hse.data.mental.test.entities.MentalTestQuestionEntity
+import ru.edu.hse.data.mental.test.entities.MentalTestQuestionDataEntity
 import ru.edu.hse.data.mental.test.exceptions.MentalTestRepositoryException
 import ru.edu.hse.data.mental.test.source.MentalTestDataSource
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class RealMentalTestDataRepository @Inject constructor(
         return mentalTestLazyFlowLoader.listen()
     }
 
-    override suspend fun setMentalTestAnswer(mentalQuestion: MentalTestQuestionEntity, answer: String) {
+    override suspend fun setMentalTestAnswer(mentalQuestion: MentalTestQuestionDataEntity, answer: String) {
         source.setMentalTestAnswer(mentalQuestion, answer)
     }
 

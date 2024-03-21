@@ -1,7 +1,7 @@
 package ru.edu.hse.data.mental.test.source
 
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
-import ru.edu.hse.data.mental.test.entities.MentalTestQuestionEntity
+import ru.edu.hse.data.mental.test.entities.MentalTestQuestionDataEntity
 
 interface MentalTestDataSource {
 
@@ -13,6 +13,6 @@ interface MentalTestDataSource {
     /**
      * Set mental test answer.
      */
-    suspend fun setMentalTestAnswer(mentalQuestion: MentalTestQuestionEntity, answer: String)
+    suspend fun setMentalTestAnswer(mentalQuestion: MentalTestQuestionDataEntity, answer: String)
 
 }

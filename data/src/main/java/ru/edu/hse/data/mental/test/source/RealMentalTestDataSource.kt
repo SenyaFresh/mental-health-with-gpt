@@ -9,7 +9,7 @@ import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
 import ru.edu.hse.data.RemoteConfigManager
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
-import ru.edu.hse.data.mental.test.entities.MentalTestQuestionEntity
+import ru.edu.hse.data.mental.test.entities.MentalTestQuestionDataEntity
 import ru.edu.hse.data.mental.test.exceptions.WrongAnswerException
 import ru.edu.hse.data.mental.test.repository.RealMentalTestDataRepository
 
@@ -26,7 +26,7 @@ class RealMentalTestDataSource: MentalTestDataSource {
     }
 
     override suspend fun setMentalTestAnswer(
-        mentalQuestion: MentalTestQuestionEntity,
+        mentalQuestion: MentalTestQuestionDataEntity,
         answer: String
     ) {
         if (mentalQuestion.questionType == "withOptions" && !mentalQuestion.answers!!.contains(answer))
