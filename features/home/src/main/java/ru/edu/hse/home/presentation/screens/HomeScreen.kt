@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,37 +16,37 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.home.R
-import ru.edu.hse.home.domain.entities.DepressionTest
+import ru.edu.hse.home.domain.entities.EverydayMissionEntity
+import ru.edu.hse.home.domain.entities.EverydayMissionsListEntity
 import ru.edu.hse.home.domain.entities.HealthData
+import ru.edu.hse.home.domain.entities.MentalTestEntity
+import ru.edu.hse.home.domain.entities.MentalTestQuestionEntity
 import ru.edu.hse.home.presentation.components.DefaultCardWithTitle
+import ru.edu.hse.home.presentation.components.EverydayMissionsList
 import ru.edu.hse.home.presentation.components.HealthDataItem
 import ru.edu.hse.home.presentation.components.ResultContainerWithPermissionsComposable
 import ru.edu.hse.home.presentation.components.TestDataItem
-import ru.edu.hse.home.presentation.utils.depressionLevelCalculator
+import ru.edu.hse.home.presentation.events.HomeEvent
 import ru.edu.hse.presentation.ResultContainerComposable
 import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultText
 import ru.edu.hse.themes.SecondaryColor
+import kotlin.math.roundToInt
 
 @Composable
 fun HomeScreen(
     healthContainer: ResultContainer<HealthData>,
-    healthOnLoad: () -> Unit,
-    missionContainer: ResultContainer<String>,
-    missionOnLoad: () -> Unit,
-    depressionStatsContainer: ResultContainer<Int>,
-    depressionStatsOnLoad: () -> Unit,
-    depressionTestContainer: ResultContainer<DepressionTest>,
-    depressionTestOnLoad: () -> Unit,
+    missionsContainer: ResultContainer<EverydayMissionsListEntity>,
+    mentalTestContainer: ResultContainer<MentalTestEntity>,
     onPermissionsLaunch: () -> Unit,
-    onUpdateDepressionPoints: (Int) -> Unit
+    onEvent: (HomeEvent) -> Unit
 ) {
 
     Column(
@@ -59,7 +58,7 @@ fun HomeScreen(
             Box(modifier = Modifier.height(300.dp)) {
                 ResultContainerWithPermissionsComposable(
                     container = healthContainer,
-                    onTryAgain = healthOnLoad,
+                    onTryAgain = { onEvent(HomeEvent.HealthOnLoad) },
                     onPermissionsLaunch = onPermissionsLaunch
                 ) {
                     Column(
@@ -92,15 +91,13 @@ fun HomeScreen(
                         HealthDataItem(
                             icon = {
                                 Image(
-                                    painterResource(id = R.drawable.ic_blood_pressure),
+                                    painterResource(id = R.drawable.ic_sleep),
                                     contentDescription = null
                                 )
                             },
-                            value = (healthContainer.unwrap().bloodPressureSystolicAvg?.toString()
-                                ?: "-") +
-                                    "/" + (healthContainer.unwrap().bloodPressureDiastolicAvg?.toString()
-                                ?: "-"),
-                            suffix = "мм рт. ст."
+                            value = healthContainer.unwrap().sleepMinutes?.toDouble()?.div(60)
+                                ?.roundToInt()?.toString() ?: "-",
+                            suffix = "ч."
                         )
                     }
                 }
@@ -109,96 +106,60 @@ fun HomeScreen(
 
 
 
-        DefaultCardWithTitle(title = "Ежедневная миссия", modifier = Modifier.padding(10.dp)) {
-            ResultContainerComposable(container = missionContainer, onTryAgain = missionOnLoad) {
-                DefaultText(
-                    text = missionContainer.unwrap(),
-                    modifier = Modifier.padding(12.dp),
-                    fontSize = 16.sp
-                )
+        DefaultCardWithTitle(title = "Ежедневные миссии", modifier = Modifier.padding(10.dp)) {
+            ResultContainerComposable(
+                container = missionsContainer,
+                onTryAgain = { onEvent(HomeEvent.EverydayMissionsOnLoad) }) {
+                EverydayMissionsList(
+                    missionsContainer.unwrap().missionsList,
+                    onMissionCompleted = { onEvent(HomeEvent.SetMissionCompletionEvent(it)) })
             }
         }
 
 
-
-        DefaultCardWithTitle(title = "Уровень депрессии", modifier = Modifier.padding(10.dp)) {
-
-            var showTest by rememberSaveable {
-                mutableStateOf(false)
-            }
-
-            var categoryIndex by rememberSaveable {
-                mutableIntStateOf(0)
-            }
-
-            var depressionPoints by rememberSaveable {
-                mutableIntStateOf(0)
-            }
-
-            if (!showTest) {
-                ResultContainerComposable(
-                    container = depressionStatsContainer,
-                    onTryAgain = depressionStatsOnLoad
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(horizontal = 12.dp, vertical = 4.dp)
-                            .height(100.dp),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        val depressionText: String
-                        val depressionTestButtonText: String
-
-                        if (depressionStatsContainer.unwrap() == -1) {
-                            depressionText = "Давайте пройдем тест и узнаем ваш уровень депрессии."
-                            depressionTestButtonText = "Пройти тест"
-                        } else {
-                            depressionText = "Уровень депрессии: ${
-                                depressionLevelCalculator(depressionStatsContainer.unwrap())
-                            }."
-                            depressionTestButtonText = "Пройти тест еще раз"
-                        }
-
-                        DefaultText(text = depressionText, fontSize = 16.sp)
-
-                        Row(
-                            horizontalArrangement = Arrangement.End,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            DefaultButton(
-                                text = depressionTestButtonText,
-                                onClick = {
-                                    categoryIndex = 0
-                                    depressionPoints = 0
-                                    showTest = true
-                                },
-                                containerColor = SecondaryColor
-                            )
-                        }
-                    }
+        DefaultCardWithTitle(
+            title = "Тест на ментальное здоровье",
+            modifier = Modifier.padding(10.dp)
+        ) {
+            ResultContainerComposable(
+                container = mentalTestContainer,
+                onTryAgain = { onEvent(HomeEvent.MentalTestOnLoad) }) {
+                var showTest by rememberSaveable {
+                    mutableStateOf(false)
                 }
-            } else {
-                ResultContainerComposable(
-                    container = depressionTestContainer,
-                    onTryAgain = depressionTestOnLoad
-                ) {
-                    val category = depressionTestContainer.unwrap().categories[categoryIndex]
 
-                    val categoryItems = listOf(
-                        category.firstStatement,
-                        category.secondStatement,
-                        category.thirdStatement,
-                        category.fourthStatement
-                    )
+                var questionIndex by rememberSaveable {
+                    mutableIntStateOf(0)
+                }
 
-                    TestDataItem(items = categoryItems, onClick = {
-                        depressionPoints += it
-                        if (categoryIndex == depressionTestContainer.unwrap().categories.lastIndex) {
-                            onUpdateDepressionPoints(depressionPoints)
-                            showTest = false
-                        } else {
-                            categoryIndex++
+                if (!showTest) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .padding(18.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        DefaultButton(
+                            text = "Пройти тест",
+                            onClick = { showTest = true },
+                            containerColor = SecondaryColor
+                        )
+                    }
+                } else {
+                    val questionEntity =
+                        mentalTestContainer.unwrap().mentalTestQuestions[questionIndex]
+
+                    TestDataItem(questionEntity = questionEntity, onClick = { question, answer ->
+                        Snapshot.withMutableSnapshot {
+                            if (questionIndex == mentalTestContainer.unwrap().mentalTestQuestions.lastIndex) {
+                                showTest = false
+                                questionIndex = 0
+                            } else {
+                                questionIndex++
+                            }
                         }
+                        onEvent(HomeEvent.SetMentalTestAnswerEvent(question, answer))
                     })
                 }
             }
@@ -211,15 +172,24 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(
-        healthContainer = ResultContainer.Success(HealthData(4122, 75, 120, 100)),
-        healthOnLoad = {},
-        missionContainer = ResultContainer.Success("Совершите одно доброе дело без ожидания благодарности. Например, уступите место в транспорте или улыбнитесь незнакомцу."),
-        missionOnLoad = {},
-        depressionStatsContainer = ResultContainer.Success(-1),
-        depressionStatsOnLoad = {},
-        depressionTestContainer = ResultContainer.Success(DepressionTest(listOf())),
-        depressionTestOnLoad = {},
-        onPermissionsLaunch = {},
-        onUpdateDepressionPoints = {}
+        healthContainer = ResultContainer.Success(HealthData(7000, 70, 360)),
+        missionsContainer = ResultContainer.Success(
+            EverydayMissionsListEntity(
+                listOf(
+                    EverydayMissionEntity(text = "Прочитать книгу"),
+                    EverydayMissionEntity(text = "Сделать зарядку", completed = true),
+                    EverydayMissionEntity(text = "Выпить 2 литра воды")
+                )
+            )
+        ),
+        mentalTestContainer = ResultContainer.Success(
+            MentalTestEntity(
+                "af",
+                listOf(MentalTestQuestionEntity("a", null, "Пример вопроса", "open")),
+                "a"
+            )
+        ),
+        onPermissionsLaunch = { },
+        onEvent = {}
     )
 }
