@@ -1,4 +1,4 @@
-package ru.edu.hse.home.presentation.components
+package ru.edu.hse.themes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,11 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.edu.hse.themes.DefaultCard
-import ru.edu.hse.themes.DefaultText
-import ru.edu.hse.themes.OutlineColor
-import ru.edu.hse.themes.OutlineThickness
-import ru.edu.hse.themes.PrimaryColor
 
 @Composable
 fun DefaultCardWithTitle(

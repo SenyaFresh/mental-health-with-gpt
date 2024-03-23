@@ -29,7 +29,6 @@ import ru.edu.hse.home.domain.entities.EverydayMissionsListEntity
 import ru.edu.hse.home.domain.entities.HealthData
 import ru.edu.hse.home.domain.entities.MentalTestEntity
 import ru.edu.hse.home.domain.entities.MentalTestQuestionEntity
-import ru.edu.hse.home.presentation.components.DefaultCardWithTitle
 import ru.edu.hse.home.presentation.components.EverydayMissionsList
 import ru.edu.hse.home.presentation.components.HealthDataItem
 import ru.edu.hse.home.presentation.components.ResultContainerWithPermissionsComposable
@@ -37,6 +36,7 @@ import ru.edu.hse.home.presentation.components.TestDataItem
 import ru.edu.hse.home.presentation.events.HomeEvent
 import ru.edu.hse.presentation.ResultContainerComposable
 import ru.edu.hse.themes.DefaultButton
+import ru.edu.hse.themes.DefaultCardWithTitle
 import ru.edu.hse.themes.SecondaryColor
 import kotlin.math.roundToInt
 
