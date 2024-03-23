@@ -185,7 +185,7 @@ fun HomeScreenPreview() {
         mentalTestContainer = ResultContainer.Success(
             MentalTestEntity(
                 "af",
-                listOf(MentalTestQuestionEntity("a", null, "Пример вопроса", "open")),
+                listOf(MentalTestQuestionEntity("a", listOf("Никогда", "Редко", "Иногда", "Часто", "Постоянно"), "Пример вопроса", "withOptions")),
                 "a"
             )
         ),

@@ -77,6 +77,9 @@ dependencies {
     // health connect
     implementation("androidx.health.connect:connect-client:1.0.0-alpha11")
 
+    // openai
+    implementation("com.aallam.openai:openai-client:3.7.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
