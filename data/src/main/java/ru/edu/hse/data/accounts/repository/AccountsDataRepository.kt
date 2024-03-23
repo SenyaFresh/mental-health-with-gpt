@@ -23,11 +23,6 @@ interface AccountsDataRepository {
     suspend fun updateAccountUsernameAndEmail(username: String, email: String)
 
     /**
-     * Update account [depressionPoints].
-     */
-    suspend fun updateAccountDepressionPoints(depressionPoints: Int)
-
-    /**
      * Log out from account.
      */
     suspend fun logout()

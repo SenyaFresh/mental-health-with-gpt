@@ -11,7 +11,6 @@ import ru.edu.hse.data.accounts.entities.SignUpDataEntity
 import ru.edu.hse.data.accounts.sources.AccountsDataSource
 import javax.inject.Inject
 
-// TODO("Add dependency injection for scope and lazyFlowLoaderFactory.")
 class RealAccountsDataRepository @Inject constructor(
     private val accountsDataSource: AccountsDataSource,
     scope: CoroutineScope,
@@ -44,11 +43,6 @@ class RealAccountsDataRepository @Inject constructor(
 
     override suspend fun updateAccountUsernameAndEmail(username: String, email: String) {
         val updatedAccount = accountsDataSource.updateAccount(username = username, email = email)
-        accountLazyFlowLoader.update(ResultContainer.Success(updatedAccount))
-    }
-
-    override suspend fun updateAccountDepressionPoints(depressionPoints: Int) {
-        val updatedAccount = accountsDataSource.updateAccount(depressionPoints = depressionPoints)
         accountLazyFlowLoader.update(ResultContainer.Success(updatedAccount))
     }
 

@@ -1,6 +1,10 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    // hilt 1/3
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -64,6 +68,19 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
+    // hilt 2/3
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    api(project(":core:common"))
+    api(project(":core:common-impl"))
+    api(project(":data"))
+    api(project(":features:assistant"))
+    api(project(":features:home"))
+    api(project(":features:profile"))
+    api(project(":features:sign-in"))
+    api(project(":features:sign-up"))
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -72,4 +89,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+// hilt 3/3
+kapt {
+    correctErrorTypes = true
 }
