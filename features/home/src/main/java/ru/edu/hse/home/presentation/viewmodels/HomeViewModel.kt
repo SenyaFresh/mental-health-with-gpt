@@ -1,5 +1,6 @@
 package ru.edu.hse.home.presentation.viewmodels
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ import ru.edu.hse.home.presentation.events.HomeEvent
 import ru.edu.hse.presentation.BaseViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMentalTestUseCase: GetMentalTestUseCase,
     private val setMentalTestAnswerUseCase: SetMentalTestAnswerUseCase,
@@ -35,9 +37,9 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow<ResultContainer<HealthData>>(ResultContainer.Pending)
     val healthDataStateFlow = _healthDataStateFlow.asStateFlow()
 
-    private val _everydayMissionStateFlow =
+    private val _everydayMissionsStateFlow =
         MutableStateFlow<ResultContainer<EverydayMissionsListEntity>>(ResultContainer.Pending)
-    val everydayMissionStateFlow = _everydayMissionStateFlow.asStateFlow()
+    val everydayMissionsStateFlow = _everydayMissionsStateFlow.asStateFlow()
 
     private val _mentalTestStateFlow =
         MutableStateFlow<ResultContainer<MentalTestEntity>>(ResultContainer.Pending)
@@ -82,7 +84,7 @@ class HomeViewModel @Inject constructor(
     private fun collectEverydayMissions() {
         viewModelScope.launch {
             getEverydayMissionsUseCase.getEverydayMissions().collect { result ->
-                _everydayMissionStateFlow.value = result
+                _everydayMissionsStateFlow.value = result
             }
         }
     }

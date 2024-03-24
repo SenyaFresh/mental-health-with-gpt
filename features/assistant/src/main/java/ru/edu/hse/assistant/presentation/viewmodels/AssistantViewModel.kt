@@ -1,5 +1,6 @@
 package ru.edu.hse.assistant.presentation.viewmodels
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.takeWhile
@@ -9,6 +10,7 @@ import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.presentation.BaseViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class AssistantViewModel @Inject constructor(
     private val getResponseUseCase: GetResponseUseCase
 ) : BaseViewModel() {
@@ -31,5 +33,4 @@ class AssistantViewModel @Inject constructor(
                 }
         }
     }
-
 }

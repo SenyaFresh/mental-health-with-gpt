@@ -20,8 +20,7 @@ import ru.edu.hse.themes.SecondaryColor
 @Composable
 fun BaseBottomNavigationBar(
     items: List<BaseBottomNavigationItem>,
-    selected: Int,
-    onItemClick: (Int) -> Unit
+    selected: Int
 ) {
 
     NavigationBar(
@@ -31,7 +30,7 @@ fun BaseBottomNavigationBar(
         items.forEachIndexed { index, baseBottomNavigationItem ->
             NavigationBarItem(
                 selected = index == selected,
-                onClick = { onItemClick(index) },
+                onClick = { baseBottomNavigationItem.onItemClick },
                 icon = {
                     Icon(
                         painter = painterResource(id = baseBottomNavigationItem.icon),
@@ -55,15 +54,16 @@ fun BaseBottomNavigationBar(
 fun BaseBottomNavigationBarPreview() {
     BaseBottomNavigationBar(
         items = listOf(
-            BaseBottomNavigationItem(R.drawable.ic_question),
-            BaseBottomNavigationItem(R.drawable.ic_home),
-            BaseBottomNavigationItem(R.drawable.ic_profile)
+            BaseBottomNavigationItem(R.drawable.ic_question, Screen.AssistantScreen) { _ -> },
+            BaseBottomNavigationItem(R.drawable.ic_home, Screen.HomeScreen) { _ -> },
+            BaseBottomNavigationItem(R.drawable.ic_profile, Screen.ProfileScreen) { _ -> }
         ),
-        selected = 1,
-        onItemClick = { _ -> }
+        selected = 1
     )
 }
 
 data class BaseBottomNavigationItem(
-    @DrawableRes val icon: Int
+    @DrawableRes val icon: Int,
+    val screen: Screen,
+    val onItemClick: (Screen) -> Unit
 )

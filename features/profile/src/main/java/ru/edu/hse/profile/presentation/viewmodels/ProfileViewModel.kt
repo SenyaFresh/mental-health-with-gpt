@@ -1,5 +1,6 @@
 package ru.edu.hse.profile.presentation.viewmodels
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ import ru.edu.hse.profile.presentation.events.ProfileEvent
 import ru.edu.hse.profile.presentation.routers.ProfileRouter
 import javax.inject.Inject
 
+@HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val editProfileUseCase: EditProfileUseCase,
     private val getProfileUseCase: GetProfileUseCase,
