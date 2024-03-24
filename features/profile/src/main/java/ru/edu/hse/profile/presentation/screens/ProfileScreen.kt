@@ -34,7 +34,8 @@ import ru.edu.hse.themes.NameIcon
 fun ProfileScreen(
     container: ResultContainer<ProfileViewModel.State>,
     onTryAgain: () -> Unit,
-    onEvent: (ProfileEvent) -> Unit
+    onEvent: (ProfileEvent) -> Unit,
+    onLaunchAuthScreen: () -> Unit
 ) {
 
     ResultContainerComposable(container = container, onTryAgain = onTryAgain) {
@@ -102,7 +103,10 @@ fun ProfileScreen(
                 text = "Выйти из аккаунта",
                 containerColor = Color.Transparent,
                 enabled = container.unwrap().enableButtons,
-                onClick = { onEvent(ProfileEvent.Logout) }
+                onClick = {
+                    onEvent(ProfileEvent.Logout)
+                    onLaunchAuthScreen()
+                }
             )
 
             if (container.unwrap().showProgressBar) {
@@ -126,8 +130,6 @@ fun ProfileScreenPreview() {
                 emailError = false,
                 usernameError = false
             )
-        ),
-        { },
-        { }
+        ), { }, { }, { }
     )
 }

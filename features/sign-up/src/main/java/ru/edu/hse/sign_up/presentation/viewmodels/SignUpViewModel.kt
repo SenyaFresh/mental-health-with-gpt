@@ -2,6 +2,7 @@ package ru.edu.hse.sign_up.presentation.viewmodels
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import ru.edu.hse.common.AuthenticationException
@@ -12,14 +13,11 @@ import ru.edu.hse.sign_up.domain.exceptions.EmptyPasswordException
 import ru.edu.hse.sign_up.domain.exceptions.EmptyUsernameException
 import ru.edu.hse.sign_up.domain.usecases.SignUpUseCase
 import ru.edu.hse.sign_up.presentation.events.SignUpEvent
-import ru.edu.hse.sign_up.presentation.routers.SignUpRouter
 import javax.inject.Inject
 
-// TODO("Inject router.")
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase,
-    private val router: SignUpRouter
+    private val signUpUseCase: SignUpUseCase
 ) : BaseViewModel() {
 
     private val progressStateFlow = MutableStateFlow(false)
@@ -35,6 +33,9 @@ class SignUpViewModel @Inject constructor(
         ::merge
     )
 
+    private val _launchMainStateFlow = MutableStateFlow(false)
+    val launchMainStateFlow = _launchMainStateFlow.asStateFlow()
+
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.SignUp -> signUp(event.email, event.username, event.password)
@@ -49,7 +50,7 @@ class SignUpViewModel @Inject constructor(
             try {
                 progressStateFlow.value = true
                 signUpUseCase.signUp(email, username, password)
-                router.launchMain()
+                _launchMainStateFlow.value = true
             } catch (e: EmptyEmailException) {
                 emailErrorStateFlow.value = true
                 toaster.showToast(resources.getString(R.string.feature_sign_up_empty_email))
@@ -63,6 +64,7 @@ class SignUpViewModel @Inject constructor(
                 toaster.showToast(resources.getString(R.string.feature_sign_up_invalid_data))
             } finally {
                 progressStateFlow.value = false
+                _launchMainStateFlow.value = false
             }
         }
     }

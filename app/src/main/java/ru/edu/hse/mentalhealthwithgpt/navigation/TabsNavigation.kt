@@ -26,6 +26,10 @@ import ru.edu.hse.home.presentation.viewmodels.HomeViewModel
 import ru.edu.hse.mentalhealthwithgpt.R
 import ru.edu.hse.profile.presentation.screens.ProfileScreen
 import ru.edu.hse.profile.presentation.viewmodels.ProfileViewModel
+import ru.edu.hse.sign_in.presentation.screens.SignInScreen
+import ru.edu.hse.sign_in.presentation.viewmodels.SignInViewModel
+import ru.edu.hse.sign_up.presentation.screens.SignUpScreen
+import ru.edu.hse.sign_up.presentation.viewmodels.SignUpViewModel
 
 @Composable
 fun TabsNavigation() {
@@ -36,6 +40,12 @@ fun TabsNavigation() {
         mutableIntStateOf(0)
     }
     val currentRote = backstackState?.destination?.route
+
+    val bottomBarVisibility = remember(key1 = backstackState) {
+        backstackState?.destination?.route == Screen.AssistantScreen.route ||
+                backstackState?.destination?.route == Screen.HomeScreen.route ||
+                backstackState?.destination?.route == Screen.ProfileScreen.route
+    }
 
     selectedItem = remember(key1 = backstackState) {
         when (currentRote) {
@@ -70,17 +80,58 @@ fun TabsNavigation() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            BaseBottomNavigationBar(
-                items = bottomNavigationItems,
-                selected = selectedItem
-            )
+            if (bottomBarVisibility) {
+                BaseBottomNavigationBar(
+                    items = bottomNavigationItems,
+                    selected = selectedItem
+                )
+            }
         }
     ) {
         NavHost(
             modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
             navController = navController,
-            startDestination = Screen.HomeScreen.route
+            startDestination = Screen.SignInScreen.route
         ) {
+
+            composable(route = Screen.SignInScreen.route) {
+                val signInViewModel: SignInViewModel = hiltViewModel()
+
+                val signInState =
+                    signInViewModel.stateFlow.collectAsState(initial = ResultContainer.Pending)
+                val launchMainState = signInViewModel.launchMainStateFlow.collectAsState()
+
+                SignInScreen(
+                    container = signInState.value,
+                    onTryAgain = { signInViewModel.load() },
+                    onEvent = signInViewModel::onEvent,
+                    launchMainFlag = launchMainState.value,
+                    onLaunchMain = { navController.navigate(Screen.HomeScreen.route) },
+                    onLaunchSignUp = { navController.navigate(Screen.SignUpScreen.route) }
+                )
+            }
+
+            composable(route = Screen.SignUpScreen.route) {
+                val signUpViewModel: SignUpViewModel = hiltViewModel()
+
+                val signUpState = signUpViewModel.stateFlow.collectAsState(
+                    initial = SignUpViewModel.State(
+                        isInProgress = false,
+                        emailError = false,
+                        usernameError = false,
+                        passwordError = false
+                    )
+                )
+                val launchMainState = signUpViewModel.launchMainStateFlow.collectAsState()
+
+                SignUpScreen(
+                    state = signUpState.value,
+                    onEvent = signUpViewModel::onEvent,
+                    launchMainFlag = launchMainState.value,
+                    onLaunchMain = { navController.navigate(Screen.HomeScreen.route) },
+                )
+            }
+
 
             composable(Screen.AssistantScreen.route) {
                 val assistantViewModel: AssistantViewModel = hiltViewModel()
@@ -122,7 +173,8 @@ fun TabsNavigation() {
                 ProfileScreen(
                     container = profileState.value,
                     onTryAgain = profileViewModel::reload,
-                    onEvent = profileViewModel::onEvent
+                    onEvent = profileViewModel::onEvent,
+                    onLaunchAuthScreen = { navController.navigate(Screen.SignInScreen.route) }
                 )
             }
         }

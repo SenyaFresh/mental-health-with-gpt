@@ -29,7 +29,12 @@ import ru.edu.hse.themes.NameIcon
 import ru.edu.hse.themes.PasswordIcon
 
 @Composable
-fun SignUpScreen(state: SignUpViewModel.State, onEvent: (SignUpEvent) -> Unit) {
+fun SignUpScreen(
+    state: SignUpViewModel.State,
+    onEvent: (SignUpEvent) -> Unit,
+    launchMainFlag: Boolean,
+    onLaunchMain: () -> Unit
+) {
     var email by rememberSaveable {
         mutableStateOf("")
     }
@@ -42,6 +47,10 @@ fun SignUpScreen(state: SignUpViewModel.State, onEvent: (SignUpEvent) -> Unit) {
         mutableStateOf("")
     }
 
+    if (launchMainFlag) {
+        onLaunchMain()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +59,7 @@ fun SignUpScreen(state: SignUpViewModel.State, onEvent: (SignUpEvent) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        DefaultTitle(modifier = Modifier.padding(bottom = 20.dp),text = "Создать аккаунт")
+        DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = "Создать аккаунт")
 
         DefaultTextField(
             modifier = Modifier.padding(bottom = 20.dp),
@@ -114,5 +123,9 @@ fun SignUpScreen(state: SignUpViewModel.State, onEvent: (SignUpEvent) -> Unit) {
 @Preview(showSystemUi = true)
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(state = SignUpViewModel.State(false, false, false, false), onEvent = { })
+    SignUpScreen(
+        state = SignUpViewModel.State(false, false, false, false),
+        onEvent = { },
+        launchMainFlag = false,
+        onLaunchMain = { })
 }

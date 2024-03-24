@@ -8,11 +8,6 @@ sealed class SignInEvent {
     data class SignIn(val email: String, val password: String) : SignInEvent()
 
     /**
-     * Launch sign up screen.
-     */
-    data object LaunchSignUp : SignInEvent()
-
-    /**
      * Disable email error.
      */
     data object DisableEmailError : SignInEvent()

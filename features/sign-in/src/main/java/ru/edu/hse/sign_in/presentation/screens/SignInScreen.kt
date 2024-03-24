@@ -35,7 +35,10 @@ import ru.edu.hse.themes.SecondaryColor
 fun SignInScreen(
     container: ResultContainer<SignInViewModel.State>,
     onTryAgain: () -> Unit,
-    onEvent: (SignInEvent) -> Unit
+    onEvent: (SignInEvent) -> Unit,
+    launchMainFlag: Boolean,
+    onLaunchMain: () -> Unit,
+    onLaunchSignUp: () -> Unit
 ) {
 
     ResultContainerComposable(container = container, onTryAgain = onTryAgain) {
@@ -47,6 +50,10 @@ fun SignInScreen(
             mutableStateOf("")
         }
 
+        if (launchMainFlag) {
+            onLaunchMain()
+        }
+        
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -103,7 +110,7 @@ fun SignInScreen(
                 text = "Зарегистрироваться",
                 containerColor = SecondaryColor,
                 enabled = container.unwrap().enableButtons,
-                onClick = { onEvent(SignInEvent.LaunchSignUp) }
+                onClick = { onLaunchSignUp() }
             )
 
             if (container.unwrap().showProgressBar) {
@@ -122,6 +129,9 @@ fun SignInScreenPreview() {
     SignInScreen(
         container = ResultContainer.Success(SignInViewModel.State(false, false, false)),
         onTryAgain = {  },
-        onEvent = {}
+        onEvent = {},
+        launchMainFlag = false,
+        onLaunchMain = { },
+        onLaunchSignUp = { }
     )
 }

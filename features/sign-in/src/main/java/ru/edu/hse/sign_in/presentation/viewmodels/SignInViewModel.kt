@@ -2,6 +2,7 @@ package ru.edu.hse.sign_in.presentation.viewmodels
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import ru.edu.hse.common.AuthenticationException
@@ -12,7 +13,6 @@ import ru.edu.hse.sign_in.domain.exceptions.EmptyPasswordException
 import ru.edu.hse.sign_in.domain.usecases.CheckIfSignedInUseCase
 import ru.edu.hse.sign_in.domain.usecases.SignInUseCase
 import ru.edu.hse.sign_in.presentation.events.SignInEvent
-import ru.edu.hse.sign_in.presentation.routers.SignInRouter
 import ru.edu.hse.sing_in.R
 import javax.inject.Inject
 
@@ -20,8 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val checkIfSignedInUseCase: CheckIfSignedInUseCase,
-    private val signInUseCase: SignInUseCase,
-    private val router: SignInRouter
+    private val signInUseCase: SignInUseCase
 ) : BaseViewModel() {
 
     private val loadScreenStateFlow = MutableStateFlow<ResultContainer<Unit>>(ResultContainer.Pending)
@@ -37,6 +36,9 @@ class SignInViewModel @Inject constructor(
         ::merge
     )
 
+    private val _launchMainStateFlow = MutableStateFlow(false)
+    val launchMainStateFlow = _launchMainStateFlow.asStateFlow()
+
     init {
         load()
     }
@@ -46,12 +48,14 @@ class SignInViewModel @Inject constructor(
             try {
                 loadScreenStateFlow.value = ResultContainer.Pending
                 if (checkIfSignedInUseCase.isSignedIn()) {
-                    router.launchMain()
+                    _launchMainStateFlow.value = true
                 } else {
                     loadScreenStateFlow.value = ResultContainer.Success(Unit)
                 }
             } catch (e: Exception) {
                 loadScreenStateFlow.value = ResultContainer.Error(e)
+            } finally {
+                _launchMainStateFlow.value = false
             }
         }
     }
@@ -59,7 +63,6 @@ class SignInViewModel @Inject constructor(
     fun onEvent(event: SignInEvent) {
         when (event) {
             is SignInEvent.SignIn -> signIn(event.email, event.password)
-            is SignInEvent.LaunchSignUp ->  debounce { router.launchSignUp() }
             is SignInEvent.DisableEmailError -> emailErrorStateFlow.value = false
             is SignInEvent.DisablePasswordError -> passwordErrorStateFlow.value = false
         }
@@ -70,7 +73,7 @@ class SignInViewModel @Inject constructor(
             try {
                 progressStateFlow.value = true
                 signInUseCase.signIn(email, password)
-                router.launchMain()
+                _launchMainStateFlow.value = true
             } catch (e: EmptyEmailException) {
                 emailErrorStateFlow.value = true
                 toaster.showToast(resources.getString(R.string.feature_sign_in_empty_email))
@@ -81,6 +84,7 @@ class SignInViewModel @Inject constructor(
                 toaster.showToast(resources.getString(R.string.feature_sign_in_invalid_data))
             } finally {
                 progressStateFlow.value = false
+                _launchMainStateFlow.value = false
             }
         }
     }

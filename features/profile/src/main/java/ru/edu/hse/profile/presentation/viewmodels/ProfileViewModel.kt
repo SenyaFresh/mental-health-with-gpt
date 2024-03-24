@@ -15,15 +15,13 @@ import ru.edu.hse.profile.domain.usecases.EditProfileUseCase
 import ru.edu.hse.profile.domain.usecases.GetProfileUseCase
 import ru.edu.hse.profile.domain.usecases.LogoutUseCase
 import ru.edu.hse.profile.presentation.events.ProfileEvent
-import ru.edu.hse.profile.presentation.routers.ProfileRouter
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val editProfileUseCase: EditProfileUseCase,
     private val getProfileUseCase: GetProfileUseCase,
-    private val logoutUseCase: LogoutUseCase,
-    private val router: ProfileRouter
+    private val logoutUseCase: LogoutUseCase
 ) : BaseViewModel() {
 
     private val loadProfileStateFlow = getProfileUseCase.getProfile()
@@ -74,7 +72,6 @@ class ProfileViewModel @Inject constructor(
     private fun logout() = debounce {
         viewModelScope.launch {
             logoutUseCase.logout()
-            router.launchAuthScreen()
         }
     }
 
