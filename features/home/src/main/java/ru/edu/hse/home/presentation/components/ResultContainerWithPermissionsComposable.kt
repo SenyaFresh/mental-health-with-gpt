@@ -20,6 +20,7 @@ fun ResultContainerWithPermissionsComposable(
     container: ResultContainer<*>,
     onTryAgain: () -> Unit,
     onPermissionsLaunch: () -> Unit,
+    onRestartApp: () -> Unit,
     onSuccess: @Composable () -> Unit
 ) {
 
@@ -37,7 +38,7 @@ fun ResultContainerWithPermissionsComposable(
                         is AuthenticationException -> {
                             DefaultButton(
                                 text = Core.resources.getString(R.string.core_presentation_logout),
-                                onClick = { Core.appRestarter.restartApp() })
+                                onClick = { onRestartApp() })
                         }
 
                         is PermissionsNotGrantedException -> {

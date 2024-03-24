@@ -107,7 +107,8 @@ fun TabsNavigation() {
                     onEvent = signInViewModel::onEvent,
                     launchMainFlag = launchMainState.value,
                     onLaunchMain = { navController.navigate(Screen.HomeScreen.route) },
-                    onLaunchSignUp = { navController.navigate(Screen.SignUpScreen.route) }
+                    onLaunchSignUp = { navController.navigate(Screen.SignUpScreen.route)},
+                    onRestartApp =  { restartApp(navController) }
                 )
             }
 
@@ -129,6 +130,7 @@ fun TabsNavigation() {
                     onEvent = signUpViewModel::onEvent,
                     launchMainFlag = launchMainState.value,
                     onLaunchMain = { navController.navigate(Screen.HomeScreen.route) },
+                    onRestartApp =  { restartApp(navController) }
                 )
             }
 
@@ -140,7 +142,8 @@ fun TabsNavigation() {
 
                 AssistantScreen(
                     responseContainer = responseState.value,
-                    onGetResponse = assistantViewModel::getResponse
+                    onGetResponse = assistantViewModel::getResponse,
+                    onRestartApp =  { restartApp(navController) }
                 )
             }
 
@@ -160,7 +163,8 @@ fun TabsNavigation() {
                     missionsContainer = everydayMissionsState.value,
                     mentalTestContainer = mentalTestState.value,
                     onPermissionsLaunch = { permissionsLauncher.launch(permissions) },
-                    onEvent = homeViewModel::onEvent
+                    onEvent = homeViewModel::onEvent,
+                    onRestartApp =  { restartApp(navController) }
                 )
             }
 
@@ -174,7 +178,7 @@ fun TabsNavigation() {
                     container = profileState.value,
                     onTryAgain = profileViewModel::reload,
                     onEvent = profileViewModel::onEvent,
-                    onLaunchAuthScreen = { navController.navigate(Screen.SignInScreen.route) }
+                    onRestartApp = { restartApp(navController) }
                 )
             }
         }
@@ -190,5 +194,14 @@ private fun navigateToTab(tab: Screen, navController: NavController) {
         }
         launchSingleTop = true
         restoreState = true
+    }
+}
+
+private fun restartApp(navController: NavController) {
+    navController.popBackStack(navController.graph.startDestinationId, false)
+    navController.navigate(Screen.SignInScreen.route) {
+        popUpTo(navController.graph.startDestinationId) {
+            inclusive = true
+        }
     }
 }

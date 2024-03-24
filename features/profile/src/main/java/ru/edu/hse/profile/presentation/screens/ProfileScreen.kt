@@ -35,10 +35,14 @@ fun ProfileScreen(
     container: ResultContainer<ProfileViewModel.State>,
     onTryAgain: () -> Unit,
     onEvent: (ProfileEvent) -> Unit,
-    onLaunchAuthScreen: () -> Unit
+    onRestartApp: () -> Unit
 ) {
 
-    ResultContainerComposable(container = container, onTryAgain = onTryAgain) {
+    ResultContainerComposable(
+        container = container,
+        onTryAgain = onTryAgain,
+        onRestartApp = onRestartApp
+    ) {
 
         var email by rememberSaveable {
             mutableStateOf(container.unwrap().profile.email)
@@ -105,7 +109,7 @@ fun ProfileScreen(
                 enabled = container.unwrap().enableButtons,
                 onClick = {
                     onEvent(ProfileEvent.Logout)
-                    onLaunchAuthScreen()
+                    onRestartApp()
                 }
             )
 

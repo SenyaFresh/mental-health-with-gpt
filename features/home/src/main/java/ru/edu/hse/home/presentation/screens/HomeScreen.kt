@@ -46,7 +46,8 @@ fun HomeScreen(
     missionsContainer: ResultContainer<EverydayMissionsListEntity>,
     mentalTestContainer: ResultContainer<MentalTestEntity>,
     onPermissionsLaunch: () -> Unit,
-    onEvent: (HomeEvent) -> Unit
+    onEvent: (HomeEvent) -> Unit,
+    onRestartApp: () -> Unit
 ) {
 
     Column(
@@ -59,7 +60,8 @@ fun HomeScreen(
                 ResultContainerWithPermissionsComposable(
                     container = healthContainer,
                     onTryAgain = { onEvent(HomeEvent.HealthOnLoad) },
-                    onPermissionsLaunch = onPermissionsLaunch
+                    onPermissionsLaunch = onPermissionsLaunch,
+                    onRestartApp = onRestartApp
                 ) {
                     Column(
                         verticalArrangement = Arrangement.SpaceEvenly, modifier = Modifier
@@ -109,7 +111,9 @@ fun HomeScreen(
         DefaultCardWithTitle(title = "Ежедневные миссии", modifier = Modifier.padding(10.dp)) {
             ResultContainerComposable(
                 container = missionsContainer,
-                onTryAgain = { onEvent(HomeEvent.EverydayMissionsOnLoad) }) {
+                onTryAgain = { onEvent(HomeEvent.EverydayMissionsOnLoad) },
+                onRestartApp = onRestartApp
+            ) {
                 EverydayMissionsList(
                     missionsContainer.unwrap().missionsList,
                     onMissionCompleted = { onEvent(HomeEvent.SetMissionCompletionEvent(it)) })
@@ -123,7 +127,9 @@ fun HomeScreen(
         ) {
             ResultContainerComposable(
                 container = mentalTestContainer,
-                onTryAgain = { onEvent(HomeEvent.MentalTestOnLoad) }) {
+                onTryAgain = { onEvent(HomeEvent.MentalTestOnLoad) },
+                onRestartApp = onRestartApp
+            ) {
                 var showTest by rememberSaveable {
                     mutableStateOf(false)
                 }
@@ -185,11 +191,19 @@ fun HomeScreenPreview() {
         mentalTestContainer = ResultContainer.Success(
             MentalTestEntity(
                 "af",
-                listOf(MentalTestQuestionEntity("a", listOf("Никогда", "Редко", "Иногда", "Часто", "Постоянно"), "Пример вопроса", "withOptions")),
+                listOf(
+                    MentalTestQuestionEntity(
+                        "a",
+                        listOf("Никогда", "Редко", "Иногда", "Часто", "Постоянно"),
+                        "Пример вопроса",
+                        "withOptions"
+                    )
+                ),
                 "a"
             )
         ),
         onPermissionsLaunch = { },
-        onEvent = {}
+        onEvent = { },
+        onRestartApp = { }
     )
 }

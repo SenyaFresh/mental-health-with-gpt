@@ -10,8 +10,6 @@ object Core {
 
     private lateinit var coreProvider: CoreProvider
 
-    val appRestarter: AppRestarter get() = coreProvider.appRestarter
-
     val errorHandler: ErrorHandler get() = coreProvider.errorHandler
 
     /**

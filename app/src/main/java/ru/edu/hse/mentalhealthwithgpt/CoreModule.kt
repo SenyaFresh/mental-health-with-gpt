@@ -8,7 +8,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import ru.edu.hse.common.AppRestarter
 import ru.edu.hse.common.Core
 import ru.edu.hse.common.CoreProvider
 import ru.edu.hse.common.flow.DefaultLazyFlowLoaderFactory
@@ -22,11 +21,9 @@ class CoreModule {
 
     @Provides
     fun provideCoreProvider(
-        @ApplicationContext context: Context,
-        appRestarter: AppRestarter
+        @ApplicationContext context: Context
     ): CoreProvider {
-        // TODO("Provide appRestarter")
-        return DefaultCoreProvider(context, appRestarter)
+        return DefaultCoreProvider(context)
     }
 
     @Provides
@@ -39,6 +36,5 @@ class CoreModule {
     fun provideLazyFlowLoaderFactory(): LazyFlowLoaderFactory {
         return DefaultLazyFlowLoaderFactory(Dispatchers.IO)
     }
-
 
 }

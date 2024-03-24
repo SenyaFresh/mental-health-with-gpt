@@ -7,8 +7,6 @@ import kotlinx.coroutines.CoroutineScope
  */
 interface CoreProvider {
 
-    val appRestarter: AppRestarter
-
     val errorHandler: ErrorHandler
 
     val globalScope: CoroutineScope

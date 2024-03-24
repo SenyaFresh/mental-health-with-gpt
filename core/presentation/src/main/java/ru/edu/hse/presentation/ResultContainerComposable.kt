@@ -27,6 +27,7 @@ import ru.edu.hse.themes.DefaultText
 fun ResultContainerComposable(
     container: ResultContainer<*>,
     onTryAgain: () -> Unit,
+    onRestartApp: () -> Unit,
     onSuccess: @Composable () -> Unit
 ) {
 
@@ -42,7 +43,7 @@ fun ResultContainerComposable(
                     if (container.exception is AuthenticationException) {
                         DefaultButton(
                             text = Core.resources.getString(R.string.core_presentation_logout),
-                            onClick = { Core.appRestarter.restartApp() })
+                            onClick = { onRestartApp() })
                     } else {
                         DefaultButton(
                             text = Core.resources.getString(R.string.core_presentation_try_again),

@@ -2,7 +2,6 @@ package ru.edu.hse.common_impl
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
-import ru.edu.hse.common.AppRestarter
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.ConnectionException
 import ru.edu.hse.common.ErrorHandler
@@ -15,7 +14,6 @@ import ru.edu.hse.common.UserFriendlyException
  * Default realisation for [ErrorHandler]
  */
 class DefaultErrorHandler(
-    private val appRestarter: AppRestarter,
     private val logger: Logger,
     private val resources: Resources,
     private val toaster: Toaster
@@ -59,15 +57,15 @@ class DefaultErrorHandler(
     }
 
     /**
-     * Handles authentication error. Restarts app again only after [RESTART_TIMEOUT] to
-     * to prevent restart loop.
+     * Handles authentication error.
      */
     private fun handleAuthenticationException(exception: AuthenticationException) {
-        if (System.currentTimeMillis() - lastAppRestartTimestamp > RESTART_TIMEOUT) {
-            toaster.showToast(getUserFriendlyMessage(exception))
-            lastAppRestartTimestamp = System.currentTimeMillis()
-            appRestarter.restartApp()
-        }
+//        if (System.currentTimeMillis() - lastAppRestartTimestamp > RESTART_TIMEOUT) {
+//            toaster.showToast(getUserFriendlyMessage(exception))
+//            lastAppRestartTimestamp = System.currentTimeMillis()
+//            appRestarter.restartApp()
+//        }
+        toaster.showToast(getUserFriendlyMessage(exception))
     }
 
     /**

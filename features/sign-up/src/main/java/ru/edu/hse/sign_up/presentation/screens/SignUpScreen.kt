@@ -33,7 +33,8 @@ fun SignUpScreen(
     state: SignUpViewModel.State,
     onEvent: (SignUpEvent) -> Unit,
     launchMainFlag: Boolean,
-    onLaunchMain: () -> Unit
+    onLaunchMain: () -> Unit,
+    onRestartApp: () -> Unit
 ) {
     var email by rememberSaveable {
         mutableStateOf("")
@@ -127,5 +128,7 @@ fun SignUpScreenPreview() {
         state = SignUpViewModel.State(false, false, false, false),
         onEvent = { },
         launchMainFlag = false,
-        onLaunchMain = { })
+        onLaunchMain = { },
+        onRestartApp = { }
+    )
 }

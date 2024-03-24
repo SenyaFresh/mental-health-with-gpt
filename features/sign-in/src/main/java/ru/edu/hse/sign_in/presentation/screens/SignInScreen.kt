@@ -38,10 +38,15 @@ fun SignInScreen(
     onEvent: (SignInEvent) -> Unit,
     launchMainFlag: Boolean,
     onLaunchMain: () -> Unit,
-    onLaunchSignUp: () -> Unit
+    onLaunchSignUp: () -> Unit,
+    onRestartApp: () -> Unit
 ) {
 
-    ResultContainerComposable(container = container, onTryAgain = onTryAgain) {
+    ResultContainerComposable(
+        container = container,
+        onTryAgain = onTryAgain,
+        onRestartApp = onRestartApp
+    ) {
         var email by rememberSaveable {
             mutableStateOf("")
         }
@@ -53,7 +58,7 @@ fun SignInScreen(
         if (launchMainFlag) {
             onLaunchMain()
         }
-        
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -62,7 +67,7 @@ fun SignInScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            DefaultTitle(modifier = Modifier.padding(bottom = 20.dp),text = "Вход")
+            DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = "Вход")
 
             DefaultTextField(
                 modifier = Modifier.padding(bottom = 20.dp),
@@ -128,10 +133,11 @@ fun SignInScreen(
 fun SignInScreenPreview() {
     SignInScreen(
         container = ResultContainer.Success(SignInViewModel.State(false, false, false)),
-        onTryAgain = {  },
+        onTryAgain = { },
         onEvent = {},
         launchMainFlag = false,
         onLaunchMain = { },
-        onLaunchSignUp = { }
+        onLaunchSignUp = { },
+        onRestartApp = { }
     )
 }
