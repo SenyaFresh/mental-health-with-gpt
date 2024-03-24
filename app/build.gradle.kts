@@ -69,8 +69,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
 
     // hilt 2/3
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     api(project(":core:common"))
     api(project(":core:common-impl"))

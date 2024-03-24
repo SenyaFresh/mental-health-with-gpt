@@ -71,8 +71,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
 
     // hilt 2/3
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // health connect
     implementation("androidx.health.connect:connect-client:1.0.0-alpha11")
