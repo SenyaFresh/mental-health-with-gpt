@@ -13,8 +13,9 @@ import ru.edu.hse.common.Core
 import ru.edu.hse.data.accounts.entities.AccountDataEntity
 import ru.edu.hse.data.accounts.entities.SignUpDataEntity
 import ru.edu.hse.data.accounts.exceptions.AccountAlreadyExistsDataException
+import javax.inject.Inject
 
-class FirebaseAccountsDataSource : AccountsDataSource {
+class FirebaseAccountsDataSource @Inject constructor(): AccountsDataSource {
 
     private val auth = Firebase.auth
 

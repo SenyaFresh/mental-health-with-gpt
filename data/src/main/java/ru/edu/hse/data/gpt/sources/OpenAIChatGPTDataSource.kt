@@ -8,8 +8,9 @@ import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import ru.edu.hse.common.Core
 import ru.edu.hse.data.gpt.exceptions.ChatGPTException
+import javax.inject.Inject
 
-class OpenAIChatGPTDataSource: ChatGPTDataSource {
+class OpenAIChatGPTDataSource @Inject constructor(): ChatGPTDataSource {
 
     private val logger = Core.logger
 

@@ -12,8 +12,9 @@ import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
 import ru.edu.hse.data.mental.test.entities.MentalTestQuestionDataEntity
 import ru.edu.hse.data.mental.test.exceptions.WrongAnswerException
 import ru.edu.hse.data.mental.test.repository.RealMentalTestDataRepository
+import javax.inject.Inject
 
-class RealMentalTestDataSource: MentalTestDataSource {
+class RealMentalTestDataSource @Inject constructor(): MentalTestDataSource {
 
     private val auth = Firebase.auth
 
