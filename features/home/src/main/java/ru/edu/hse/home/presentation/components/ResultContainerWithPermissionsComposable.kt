@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
+import ru.edu.hse.common.PermissionsNotGrantedException
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.home.domain.exceptions.PermissionsNotGrantedException
 import ru.edu.hse.presentation.R
 import ru.edu.hse.themes.DefaultButton
 import ru.edu.hse.themes.DefaultText
@@ -38,7 +38,7 @@ fun ResultContainerWithPermissionsComposable(
 
             is ResultContainer.Error -> {
 
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                     DefaultText(text = Core.errorHandler.getUserFriendlyMessage(container.exception))
                     when (container.exception) {
                         is AuthenticationException -> {

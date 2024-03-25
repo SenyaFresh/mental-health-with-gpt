@@ -75,7 +75,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     // health connect
-    implementation("androidx.health.connect:connect-client:1.0.0-alpha11")
+    implementation("androidx.health.connect:connect-client:1.1.0-alpha02")
 
     // openai
     implementation("com.aallam.openai:openai-client:3.7.0")

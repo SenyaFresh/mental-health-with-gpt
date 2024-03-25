@@ -23,6 +23,8 @@ class AuthenticationException(cause: Exception? = null) : AppException(cause = c
  */
 class NotFoundException : AppException()
 
+class PermissionsNotGrantedException : AppException()
+
 /**
  * Exception with message that can be shown to user.
  */

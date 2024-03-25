@@ -39,7 +39,7 @@ class RealHealthDataRepository @Inject constructor(
                 if (subscribed) {
                     healthDataLazyFlowLoader.newAsyncLoad(silently = true)
                 }
-                delay(1000)
+                delay(60000)
             }
         }
     }

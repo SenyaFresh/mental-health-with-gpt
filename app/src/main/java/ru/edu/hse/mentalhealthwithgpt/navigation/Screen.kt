@@ -6,4 +6,5 @@ enum class Screen(val route: String) {
     HomeScreen("home_screen"),
     ProfileScreen("profile_screen"),
     AssistantScreen("assistant_screen"),
+    PrivacyPolicyScreen("privacy_policy_screen"),
 }

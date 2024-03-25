@@ -19,10 +19,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
+import ru.edu.hse.common.PermissionsNotGrantedException
 import ru.edu.hse.data.RemoteConfigManager
 import ru.edu.hse.data.health.entities.EverydayMissionDataEntity
 import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
 import ru.edu.hse.data.health.entities.HealthDataEntity
+import ru.edu.hse.data.health.exceptions.HealthConnectNotInstalledException
 import java.time.Instant
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
@@ -46,13 +48,14 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     )
 
     override fun checkInstalled(): Boolean {
-        val sdkStatus = HealthConnectClient.sdkStatus(context)
+        val sdkStatus = HealthConnectClient.getSdkStatus(context)
         return sdkStatus == SDK_AVAILABLE
     }
 
     override suspend fun hasAllPermissions(): Boolean {
-        return healthConnectClient.permissionController.getGrantedPermissions()
-            .containsAll(permissions)
+        val grantedPermissions = healthConnectClient.permissionController.getGrantedPermissions()
+
+        return grantedPermissions.containsAll(permissions)
     }
 
     override fun requestPermissionActivityContract(): ActivityResultContract<Set<String>, Set<String>> {
@@ -60,9 +63,17 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     }
 
     override suspend fun getHealthData(): HealthDataEntity {
-        if (!getFetchedDataFlag()) {
-            setPastYearData()
+        if (!checkInstalled()) {
+            throw HealthConnectNotInstalledException()
         }
+
+        if (!hasAllPermissions()) {
+            throw PermissionsNotGrantedException()
+        }
+
+//        if (!getFetchedDataFlag()) {
+//            setPastYearData()
+//        }
 
         val healthData = HealthDataEntity(
             stepsCount = getStepsData(),
@@ -238,10 +249,10 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     }
 
     private suspend fun getHeartRateData(start: Instant? = null, end: Instant? = null): Long? {
-        val startInstant = start ?: ZonedDateTime.now().truncatedTo(ChronoUnit.HOURS).toInstant()
-        val endInstant = end ?: startInstant.minus(1, ChronoUnit.HOURS)
+        val endInstant = end ?: ZonedDateTime.now().truncatedTo(ChronoUnit.HOURS).toInstant()
+        val startInstant = start ?: endInstant.minus(1, ChronoUnit.HOURS)
 
-        val heartRateTimeRangeFilter = TimeRangeFilter.between(endInstant, startInstant)
+        val heartRateTimeRangeFilter = TimeRangeFilter.between(startInstant, endInstant)
 
         val heartRateAggregateDataTypes = setOf(
             HeartRateRecord.BPM_AVG,
@@ -282,8 +293,9 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
                 .document(auth.currentUser!!.uid)
                 .get()
                 .await()
+            val isDataFetched = document[KEY_FETCHED_DATA] as Boolean
             logger.log("getFetchedDataFlag:success")
-            document[KEY_FETCHED_DATA] as Boolean
+            isDataFetched
         } catch (e: Exception) {
             logger.logError(e, "getFetchedDataFlag:failure")
             throw AuthenticationException()
@@ -293,7 +305,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     companion object {
         const val USERS_COLLECTION = "users"
 
-        const val KEY_FETCHED_DATA = "fetchedDataFlag"
+        const val KEY_FETCHED_DATA = "fetchedData"
 
         const val HEALTH_COLLECTION = "health"
         const val MISSIONS_COLLECTION = "missions"

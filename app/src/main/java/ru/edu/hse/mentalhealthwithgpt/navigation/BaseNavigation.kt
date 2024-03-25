@@ -18,12 +18,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import ru.edu.hse.assistant.presentation.screens.AssistantScreen
 import ru.edu.hse.assistant.presentation.viewmodels.AssistantViewModel
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.home.presentation.screens.HomeScreen
 import ru.edu.hse.home.presentation.viewmodels.HomeViewModel
 import ru.edu.hse.mentalhealthwithgpt.R
+import ru.edu.hse.mentalhealthwithgpt.components.PrivacyPolicyScreen
 import ru.edu.hse.profile.presentation.screens.ProfileScreen
 import ru.edu.hse.profile.presentation.viewmodels.ProfileViewModel
 import ru.edu.hse.sign_in.presentation.screens.SignInScreen
@@ -93,6 +95,17 @@ fun BaseNavigation() {
             navController = navController,
             startDestination = Screen.SignInScreen.route
         ) {
+
+            composable(
+                route = Screen.PrivacyPolicyScreen.route,
+                deepLinks = listOf(
+                    navDeepLink {
+                        action = "androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"
+                    }
+                )
+            ) {
+                PrivacyPolicyScreen()
+            }
 
             composable(route = Screen.SignInScreen.route) {
                 val signInViewModel: SignInViewModel = hiltViewModel()
