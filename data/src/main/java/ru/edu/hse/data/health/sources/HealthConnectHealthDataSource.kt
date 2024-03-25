@@ -95,7 +95,11 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
             missions = missions.copy(missionsList = newMissions)
             logger.log("getMissionsList:success")
             return missions
-        } catch (e: Exception) {
+        } catch (e: NullPointerException) {
+            logger.logError(e, "getMissionsList:empty")
+            return missions
+        }
+        catch (e: Exception) {
             logger.logError(e, "getMissionsList:failure")
             throw AuthenticationException()
         }
