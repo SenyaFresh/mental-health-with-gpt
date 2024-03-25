@@ -46,7 +46,8 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
     )
 
     override fun checkInstalled(): Boolean {
-        return HealthConnectClient.sdkStatus(context) == SDK_AVAILABLE
+        val sdkStatus = HealthConnectClient.sdkStatus(context)
+        return sdkStatus == SDK_AVAILABLE
     }
 
     override suspend fun hasAllPermissions(): Boolean {
