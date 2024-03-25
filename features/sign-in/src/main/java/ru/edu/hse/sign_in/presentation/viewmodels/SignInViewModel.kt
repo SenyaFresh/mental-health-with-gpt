@@ -48,14 +48,13 @@ class SignInViewModel @Inject constructor(
             try {
                 loadScreenStateFlow.value = ResultContainer.Pending
                 if (checkIfSignedInUseCase.isSignedIn()) {
+                    loadScreenStateFlow.value = ResultContainer.Success(Unit)
                     _launchMainStateFlow.value = true
                 } else {
                     loadScreenStateFlow.value = ResultContainer.Success(Unit)
                 }
             } catch (e: Exception) {
                 loadScreenStateFlow.value = ResultContainer.Error(e)
-            } finally {
-                _launchMainStateFlow.value = false
             }
         }
     }
@@ -84,7 +83,6 @@ class SignInViewModel @Inject constructor(
                 toaster.showToast(resources.getString(R.string.feature_sign_in_invalid_data))
             } finally {
                 progressStateFlow.value = false
-                _launchMainStateFlow.value = false
             }
         }
     }

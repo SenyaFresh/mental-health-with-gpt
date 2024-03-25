@@ -2,11 +2,15 @@ package ru.edu.hse.home.presentation.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
 import ru.edu.hse.common.ResultContainer
@@ -24,7 +28,9 @@ fun ResultContainerWithPermissionsComposable(
     onSuccess: @Composable () -> Unit
 ) {
 
-    Box(modifier = Modifier, contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 12.dp), contentAlignment = Alignment.Center) {
         when (container) {
             is ResultContainer.Success -> {
                 onSuccess()
@@ -58,7 +64,9 @@ fun ResultContainerWithPermissionsComposable(
             }
 
             is ResultContainer.Pending -> {
-                CircularProgressIndicator(color = Color.Black)
+                Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = Color.Black)
+                }
             }
         }
     }

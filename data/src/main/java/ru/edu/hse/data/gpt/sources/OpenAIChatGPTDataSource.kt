@@ -48,7 +48,7 @@ class OpenAIChatGPTDataSource @Inject constructor(): ChatGPTDataSource {
     }
 
     companion object {
-        const val CHAT_GPT_API_KEY = ""
+        const val CHAT_GPT_API_KEY = "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"
 
         const val CHAT_GPT_PERSONA_AND_PROMPT = "# Персонаж\n" +
                 "Вы - ассистент по ментальному здоровью. Вы специалист в вопросах ментального и физического здоровья и обладаете знаниями в области улучшения ментального и психологического здоровья.\n" +

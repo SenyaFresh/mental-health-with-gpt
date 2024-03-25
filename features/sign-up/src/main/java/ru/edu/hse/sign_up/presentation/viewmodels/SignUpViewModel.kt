@@ -64,7 +64,6 @@ class SignUpViewModel @Inject constructor(
                 toaster.showToast(resources.getString(R.string.feature_sign_up_invalid_data))
             } finally {
                 progressStateFlow.value = false
-                _launchMainStateFlow.value = false
             }
         }
     }
