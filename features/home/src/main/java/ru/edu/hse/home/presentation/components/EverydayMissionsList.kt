@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,9 +49,14 @@ fun EverydayMissionItem(
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        var onMissionPressed by rememberSaveable {
+            mutableStateOf(mission.completed)
+        }
+
         Checkbox(
-            checked = mission.completed,
+            checked = onMissionPressed,
             onCheckedChange = {
+                onMissionPressed = it
                 onMissionCompleted(mission.copy(completed = it))
             },
             colors = CheckboxDefaults.colors(checkedColor = PrimaryColor)
@@ -55,9 +64,12 @@ fun EverydayMissionItem(
         Spacer(modifier = Modifier.width(8.dp))
         DefaultText(
             text = mission.text,
-            color = if (mission.completed) Color.LightGray else Color.Black,
+            color = if (onMissionPressed) Color.LightGray else Color.Black,
             modifier = Modifier
-                .clickable { onMissionCompleted(mission.copy(completed = !mission.completed)) }
+                .clickable {
+                    onMissionPressed = !onMissionPressed
+                    onMissionCompleted(mission.copy(completed = onMissionPressed))
+                }
         )
     }
 }

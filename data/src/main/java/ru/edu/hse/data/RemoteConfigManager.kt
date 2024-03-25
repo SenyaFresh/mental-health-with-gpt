@@ -4,18 +4,23 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import ru.edu.hse.common.Core
+import ru.edu.hse.data.health.entities.EverydayMissionDataEntity
 import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
+import ru.edu.hse.data.health.utils.EverydayMissionDataEntityDeserializer
 import ru.edu.hse.data.mental.test.entities.MentalTestDataEntity
 import ru.edu.hse.data.mental.test.exceptions.MentalTestRepositoryException
 
 object RemoteConfigManager {
 
     private val logger = Core.logger
-    private val gson = Gson()
+    private val gson = GsonBuilder().registerTypeAdapter(
+        EverydayMissionDataEntity::class.java,
+        EverydayMissionDataEntityDeserializer()
+    ).create()
 
     private val firebaseRemoteConfig: FirebaseRemoteConfig by lazy {
         Firebase.remoteConfig.apply {

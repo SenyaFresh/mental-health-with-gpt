@@ -111,7 +111,7 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
                 .document(auth.currentUser!!.uid)
                 .collection(MISSIONS_COLLECTION)
                 .document(mission.date)
-                .set(hashMapOf<String, Any>(mission.text to mission.completed))
+                .set(hashMapOf<String, Any>(mission.text to mission.completed), SetOptions.merge())
                 .await()
 
             logger.log("setMissionCompletion:success")

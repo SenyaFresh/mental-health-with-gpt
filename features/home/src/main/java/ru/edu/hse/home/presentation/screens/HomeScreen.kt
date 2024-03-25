@@ -106,8 +106,6 @@ fun HomeScreen(
             }
         }
 
-
-
         DefaultCardWithTitle(title = "Ежедневные миссии", modifier = Modifier.padding(10.dp)) {
             ResultContainerComposable(
                 container = missionsContainer,
@@ -119,7 +117,6 @@ fun HomeScreen(
                     onMissionCompleted = { onEvent(HomeEvent.SetMissionCompletionEvent(it)) })
             }
         }
-
 
         DefaultCardWithTitle(
             title = "Тест на ментальное здоровье",
