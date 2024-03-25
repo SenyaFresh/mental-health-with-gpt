@@ -3,6 +3,7 @@ package ru.edu.hse.mentalhealthwithgpt
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import ru.edu.hse.mentalhealthwithgpt.navigation.BaseNavigation
 import ru.edu.hse.mentalhealthwithgpt.ui.theme.MentalHealthWithGPTTheme
 
 class MainActivity : ComponentActivity() {
@@ -12,7 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MentalHealthWithGPTTheme {
-
+                BaseNavigation()
             }
         }
     }

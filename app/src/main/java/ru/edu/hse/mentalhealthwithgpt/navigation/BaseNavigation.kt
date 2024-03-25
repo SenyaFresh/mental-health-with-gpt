@@ -32,7 +32,7 @@ import ru.edu.hse.sign_up.presentation.screens.SignUpScreen
 import ru.edu.hse.sign_up.presentation.viewmodels.SignUpViewModel
 
 @Composable
-fun TabsNavigation() {
+fun BaseNavigation() {
 
     val navController = rememberNavController()
     val backstackState = navController.currentBackStackEntryAsState().value
@@ -107,8 +107,8 @@ fun TabsNavigation() {
                     onEvent = signInViewModel::onEvent,
                     launchMainFlag = launchMainState.value,
                     onLaunchMain = { navController.navigate(Screen.HomeScreen.route) },
-                    onLaunchSignUp = { navController.navigate(Screen.SignUpScreen.route)},
-                    onRestartApp =  { restartApp(navController) }
+                    onLaunchSignUp = { navController.navigate(Screen.SignUpScreen.route) },
+                    onRestartApp = { restartApp(navController) }
                 )
             }
 
@@ -130,7 +130,7 @@ fun TabsNavigation() {
                     onEvent = signUpViewModel::onEvent,
                     launchMainFlag = launchMainState.value,
                     onLaunchMain = { navController.navigate(Screen.HomeScreen.route) },
-                    onRestartApp =  { restartApp(navController) }
+                    onRestartApp = { restartApp(navController) }
                 )
             }
 
@@ -143,7 +143,7 @@ fun TabsNavigation() {
                 AssistantScreen(
                     responseContainer = responseState.value,
                     onGetResponse = assistantViewModel::getResponse,
-                    onRestartApp =  { restartApp(navController) }
+                    onRestartApp = { restartApp(navController) }
                 )
             }
 
@@ -164,7 +164,7 @@ fun TabsNavigation() {
                     mentalTestContainer = mentalTestState.value,
                     onPermissionsLaunch = { permissionsLauncher.launch(permissions) },
                     onEvent = homeViewModel::onEvent,
-                    onRestartApp =  { restartApp(navController) }
+                    onRestartApp = { restartApp(navController) }
                 )
             }
 
