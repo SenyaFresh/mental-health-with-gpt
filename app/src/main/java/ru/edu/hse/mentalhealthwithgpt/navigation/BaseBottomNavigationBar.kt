@@ -30,7 +30,7 @@ fun BaseBottomNavigationBar(
         items.forEachIndexed { index, baseBottomNavigationItem ->
             NavigationBarItem(
                 selected = index == selected,
-                onClick = { baseBottomNavigationItem.onItemClick },
+                onClick = { baseBottomNavigationItem.onItemClick(baseBottomNavigationItem.screen) },
                 icon = {
                     Icon(
                         painter = painterResource(id = baseBottomNavigationItem.icon),
