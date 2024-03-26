@@ -149,8 +149,7 @@ fun BaseNavigation() {
                     state = signUpState.value,
                     onEvent = signUpViewModel::onEvent,
                     launchMainFlag = launchMainState.value,
-                    onLaunchMain = { navController.navigate(Screen.HomeScreen.route) },
-                    onRestartApp = { restartApp(navController) }
+                    onLaunchMain = { navController.navigate(Screen.HomeScreen.route) }
                 )
             }
 

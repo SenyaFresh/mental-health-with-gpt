@@ -18,8 +18,8 @@ import ru.edu.hse.common.Core
 import ru.edu.hse.common.PermissionsNotGrantedException
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.presentation.R
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultText
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultText
 
 @Composable
 fun ResultContainerWithPermissionsComposable(

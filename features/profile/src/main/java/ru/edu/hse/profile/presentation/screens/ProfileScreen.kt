@@ -24,11 +24,11 @@ import ru.edu.hse.presentation.ResultContainerComposable
 import ru.edu.hse.profile.domain.entities.Profile
 import ru.edu.hse.profile.presentation.events.ProfileEvent
 import ru.edu.hse.profile.presentation.viewmodels.ProfileViewModel
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultTextField
-import ru.edu.hse.themes.DefaultTitle
-import ru.edu.hse.themes.EmailIcon
-import ru.edu.hse.themes.NameIcon
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultTextField
+import ru.edu.hse.components.DefaultTitle
+import ru.edu.hse.components.EmailIcon
+import ru.edu.hse.components.NameIcon
 
 @Composable
 fun ProfileScreen(

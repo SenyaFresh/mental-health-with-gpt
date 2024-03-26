@@ -19,22 +19,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultTextField
+import ru.edu.hse.components.DefaultTitle
+import ru.edu.hse.components.EmailIcon
+import ru.edu.hse.components.NameIcon
+import ru.edu.hse.components.PasswordIcon
 import ru.edu.hse.sign_up.presentation.events.SignUpEvent
 import ru.edu.hse.sign_up.presentation.viewmodels.SignUpViewModel
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultTextField
-import ru.edu.hse.themes.DefaultTitle
-import ru.edu.hse.themes.EmailIcon
-import ru.edu.hse.themes.NameIcon
-import ru.edu.hse.themes.PasswordIcon
 
 @Composable
 fun SignUpScreen(
     state: SignUpViewModel.State,
     onEvent: (SignUpEvent) -> Unit,
     launchMainFlag: Boolean,
-    onLaunchMain: () -> Unit,
-    onRestartApp: () -> Unit
+    onLaunchMain: () -> Unit
 ) {
     var email by rememberSaveable {
         mutableStateOf("")
@@ -128,7 +127,6 @@ fun SignUpScreenPreview() {
         state = SignUpViewModel.State(false, false, false, false),
         onEvent = { },
         launchMainFlag = false,
-        onLaunchMain = { },
-        onRestartApp = { }
+        onLaunchMain = { }
     )
 }

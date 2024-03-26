@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.presentation.ResultContainerComposable
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultCard
-import ru.edu.hse.themes.DefaultText
-import ru.edu.hse.themes.DefaultTextField
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultCard
+import ru.edu.hse.components.DefaultText
+import ru.edu.hse.components.DefaultTextField
 
 @Composable
 fun AssistantScreen(

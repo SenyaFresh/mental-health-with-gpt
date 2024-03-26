@@ -35,9 +35,9 @@ import ru.edu.hse.home.presentation.components.ResultContainerWithPermissionsCom
 import ru.edu.hse.home.presentation.components.TestDataItem
 import ru.edu.hse.home.presentation.events.HomeEvent
 import ru.edu.hse.presentation.ResultContainerComposable
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultCardWithTitle
-import ru.edu.hse.themes.SecondaryColor
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultCardWithTitle
+import ru.edu.hse.components.SecondaryColor
 import kotlin.math.roundToInt
 
 @Composable

@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.edu.hse.mentalhealthwithgpt.R
-import ru.edu.hse.themes.PrimaryColor
-import ru.edu.hse.themes.SecondaryColor
+import ru.edu.hse.components.PrimaryColor
+import ru.edu.hse.components.SecondaryColor
 
 @Composable
 fun BaseBottomNavigationBar(

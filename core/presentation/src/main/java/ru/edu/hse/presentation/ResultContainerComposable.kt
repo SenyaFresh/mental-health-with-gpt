@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultText
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultText
 
 
 /**

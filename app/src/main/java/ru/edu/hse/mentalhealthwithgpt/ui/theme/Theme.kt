@@ -9,8 +9,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import ru.edu.hse.themes.PrimaryColor
-import ru.edu.hse.themes.SecondaryColor
+import ru.edu.hse.components.PrimaryColor
+import ru.edu.hse.components.SecondaryColor
 
 private val ColorScheme = lightColorScheme(
     primary = PrimaryColor,

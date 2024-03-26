@@ -23,12 +23,12 @@ import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.presentation.ResultContainerComposable
 import ru.edu.hse.sign_in.presentation.events.SignInEvent
 import ru.edu.hse.sign_in.presentation.viewmodels.SignInViewModel
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultTextField
-import ru.edu.hse.themes.DefaultTitle
-import ru.edu.hse.themes.EmailIcon
-import ru.edu.hse.themes.PasswordIcon
-import ru.edu.hse.themes.SecondaryColor
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultTextField
+import ru.edu.hse.components.DefaultTitle
+import ru.edu.hse.components.EmailIcon
+import ru.edu.hse.components.PasswordIcon
+import ru.edu.hse.components.SecondaryColor
 
 
 @Composable

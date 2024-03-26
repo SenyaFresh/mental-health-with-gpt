@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.edu.hse.home.domain.entities.MentalTestQuestionEntity
 import ru.edu.hse.mylibrary.R
-import ru.edu.hse.themes.DefaultButton
-import ru.edu.hse.themes.DefaultCardWithTitle
-import ru.edu.hse.themes.DefaultText
-import ru.edu.hse.themes.DefaultTextField
-import ru.edu.hse.themes.SecondaryColor
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultCardWithTitle
+import ru.edu.hse.components.DefaultText
+import ru.edu.hse.components.DefaultTextField
+import ru.edu.hse.components.SecondaryColor
 
 @Composable
 fun TestDataItem(
