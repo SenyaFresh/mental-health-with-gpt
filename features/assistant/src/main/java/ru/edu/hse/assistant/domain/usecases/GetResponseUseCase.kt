@@ -9,6 +9,9 @@ class GetResponseUseCase @Inject constructor(
     private val chatGPTRepository: ChatGPTRepository
 ) {
 
+    /**
+     * Get ChatGPT response.
+     */
     suspend fun getResponse(message: String): Flow<ResultContainer<String>> {
         return chatGPTRepository.getResponse(message)
     }

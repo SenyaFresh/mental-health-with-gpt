@@ -10,10 +10,16 @@ class GetHealthDataUseCase @Inject constructor(
     private val healthRepository: HealthRepository
 ) {
 
+    /**
+     * Get user's health data.
+     */
     suspend fun getHealthData(): Flow<ResultContainer<HealthData>> {
         return healthRepository.getHealthData()
     }
 
+    /**
+     * Reload user's health data.
+     */
     fun reloadHealthData() = healthRepository.reloadHealthData()
 
 }

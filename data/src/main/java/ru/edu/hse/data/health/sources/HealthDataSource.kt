@@ -32,4 +32,5 @@ interface HealthDataSource {
      * Set mission completed flag to true in database.
      */
     suspend fun setMissionCompletion(mission: EverydayMissionDataEntity)
+
 }

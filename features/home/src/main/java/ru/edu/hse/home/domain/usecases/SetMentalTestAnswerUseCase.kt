@@ -8,6 +8,9 @@ class SetMentalTestAnswerUseCase @Inject constructor(
     private val mentalTestRepository: MentalTestRepository
 ) {
 
+    /**
+     * Set answer for mental test question.
+     */
     suspend fun setMentalTestAnswer(question: MentalTestQuestionEntity, answer: String) {
         mentalTestRepository.setMentalTestAnswer(question, answer)
     }

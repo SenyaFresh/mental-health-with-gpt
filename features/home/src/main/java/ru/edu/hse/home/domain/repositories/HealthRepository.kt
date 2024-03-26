@@ -6,6 +6,7 @@ import ru.edu.hse.common.ResultContainer
 import ru.edu.hse.home.domain.entities.HealthData
 
 interface HealthRepository {
+
     /**
      * Get set of permissions, that app needs.
      */

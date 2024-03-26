@@ -10,6 +10,9 @@ class GetEverydayMissionsUseCase @Inject constructor(
     private val everydayMissionsRepository: EverydayMissionsRepository
 ) {
 
+    /**
+     * Get everyday missions for user.
+     */
     suspend fun getEverydayMissions() : Flow<ResultContainer<EverydayMissionsListEntity>> {
         return everydayMissionsRepository.getEverydayMissions()
     }

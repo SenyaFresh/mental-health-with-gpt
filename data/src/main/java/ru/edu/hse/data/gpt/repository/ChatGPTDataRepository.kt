@@ -6,7 +6,7 @@ import ru.edu.hse.common.ResultContainer
 interface ChatGPTDataRepository {
 
     /**
-     * Get container of chatGPT response.
+     * Get container of ChatGPT response.
      */
     fun getResponse(message: String): Flow<ResultContainer<String>>
 

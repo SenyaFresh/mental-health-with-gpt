@@ -10,6 +10,9 @@ class SignUpUseCase @Inject constructor(
     private val signUpRepository: SignUpRepository
 ) {
 
+    /**
+     * Register user in repository.
+     */
     suspend fun signUp(email: String, username: String, password: String) {
         if (email.isBlank()) throw EmptyEmailException()
         if (username.isBlank()) throw EmptyUsernameException()
@@ -17,4 +20,5 @@ class SignUpUseCase @Inject constructor(
 
         signUpRepository.signUp(email, username, password)
     }
+
 }

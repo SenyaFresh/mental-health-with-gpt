@@ -3,6 +3,7 @@ package ru.edu.hse.profile.presentation.events
 import ru.edu.hse.profile.domain.entities.Profile
 
 sealed class ProfileEvent {
+
     /**
      * Edit users email and name.
      */
@@ -22,4 +23,5 @@ sealed class ProfileEvent {
      * Disable username error.
      */
     data object DisableUsernameError : ProfileEvent()
+
 }

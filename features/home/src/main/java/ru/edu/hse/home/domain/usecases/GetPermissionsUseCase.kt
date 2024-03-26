@@ -8,8 +8,14 @@ class GetPermissionsUseCase @Inject constructor(
     private val healthRepository: HealthRepository
 ) {
 
+    /**
+     * Get needed permissions.
+     */
     fun getSetOfPermissions(): Set<String> = healthRepository.permissions
 
+    /**
+     * Get Activity ResultContract.
+     */
     fun requestPermissionActivityContract(): ActivityResultContract<Set<String>, Set<String>> =
         healthRepository.requestPermissionActivityContract()
 

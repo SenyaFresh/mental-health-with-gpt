@@ -11,6 +11,9 @@ class GetMentalTestUseCase @Inject constructor(
     private val mentalTestRepository: MentalTestRepository
 ) {
 
+    /**
+     * Get mental test for user.
+     */
     fun getMentalTest(): Flow<ResultContainer<MentalTestEntity>> =
         mentalTestRepository.getMentalTest()
 

@@ -71,9 +71,9 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
             throw PermissionsNotGrantedException()
         }
 
-//        if (!getFetchedDataFlag()) {
-//            setPastYearData()
-//        }
+        if (!getFetchedDataFlag()) {
+            setPastMonthData()
+        }
 
         val healthData = HealthDataEntity(
             stepsCount = getStepsData(),
@@ -133,10 +133,10 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         }
     }
 
-    private suspend fun setPastYearData() {
-        setStepsDataForLastDays(365)
-        setHeartRateDataForLastHours(365 * 24)
-        setSleepDataForLastDays(365)
+    private suspend fun setPastMonthData() {
+        setStepsDataForLastDays(30)
+        setHeartRateDataForLastHours(30 * 24)
+        setSleepDataForLastDays(30)
         try {
             db.collection(USERS_COLLECTION)
                 .document(auth.currentUser!!.uid)

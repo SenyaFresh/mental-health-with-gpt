@@ -8,6 +8,9 @@ class SetMissionCompletionUseCase @Inject constructor(
     private val everydayMissionsRepository: EverydayMissionsRepository
 ) {
 
+    /**
+     * Change completion status of mission.
+     */
     suspend fun setEverydayMissionsCompletion(mission: EverydayMissionEntity) {
         everydayMissionsRepository.setEverydayMissionsCompletion(mission)
     }

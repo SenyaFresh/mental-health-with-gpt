@@ -10,10 +10,14 @@ class EditProfileUseCase @Inject constructor(
     private val profileRepository: ProfileRepository
 ) {
 
+    /**
+     * Edit user's profile.
+     */
     suspend fun editProfile(profile: Profile) {
         if (profile.email.isBlank()) throw EmptyEmailException()
         if (profile.username.isBlank()) throw EmptyUsernameException()
 
         profileRepository.editProfile(profile)
     }
+
 }
