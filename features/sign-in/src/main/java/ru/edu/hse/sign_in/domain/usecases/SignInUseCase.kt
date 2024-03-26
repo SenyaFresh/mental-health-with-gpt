@@ -5,7 +5,6 @@ import ru.edu.hse.sign_in.domain.exceptions.EmptyPasswordException
 import ru.edu.hse.sign_in.domain.repositories.AuthenticationRepository
 import javax.inject.Inject
 
-// TODO("Inject repository in glue.")
 class SignInUseCase @Inject constructor(
     private val authRepository: AuthenticationRepository
 ) {

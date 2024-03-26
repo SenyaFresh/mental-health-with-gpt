@@ -16,7 +16,6 @@ import ru.edu.hse.sign_in.presentation.events.SignInEvent
 import ru.edu.hse.sing_in.R
 import javax.inject.Inject
 
-// TODO("Inject router.")
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val checkIfSignedInUseCase: CheckIfSignedInUseCase,
