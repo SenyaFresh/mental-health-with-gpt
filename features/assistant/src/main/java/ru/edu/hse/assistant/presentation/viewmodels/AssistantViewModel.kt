@@ -15,7 +15,7 @@ class AssistantViewModel @Inject constructor(
     private val getResponseUseCase: GetResponseUseCase
 ) : BaseViewModel() {
 
-    private val _response = MutableStateFlow<ResultContainer<String>>(ResultContainer.Pending)
+    private val _response = MutableStateFlow<ResultContainer<String>>(ResultContainer.Success(""))
     val response = _response.asStateFlow()
 
     fun getResponse(message: String) = debounce {

@@ -61,23 +61,22 @@ fun AssistantScreen(
                 .fillMaxWidth()
                 .height(44.dp),
             text = "Отправить",
-            onClick = { onGetResponse(message) })
+            onClick = { onGetResponse(message) }
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        ResultContainerComposable(
-            container = responseContainer,
-            onTryAgain = { onGetResponse(message) },
-            onRestartApp = { onRestartApp() }) {
-
-            DefaultCard(modifier = Modifier.fillMaxSize()) {
-                DefaultText(
-                    modifier = Modifier.padding(16.dp, 16.dp, 16.dp),
-                    text = "Ответ: ",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
+        DefaultCard(modifier = Modifier.fillMaxSize()) {
+            DefaultText(
+                modifier = Modifier.padding(16.dp, 16.dp, 16.dp),
+                text = "Ответ: ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+            ResultContainerComposable(
+                container = responseContainer,
+                onTryAgain = { onGetResponse(message) },
+                onRestartApp = { onRestartApp() }) {
                 DefaultText(
                     modifier = Modifier
                         .padding(16.dp)
