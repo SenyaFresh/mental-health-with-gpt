@@ -1,9 +1,11 @@
 package ru.edu.hse.home.presentation.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -28,9 +30,11 @@ fun ResultContainerWithPermissionsComposable(
     onSuccess: @Composable () -> Unit
 ) {
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 12.dp), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 12.dp)
+    ) {
         when (container) {
             is ResultContainer.Success -> {
                 onSuccess()
@@ -38,8 +42,15 @@ fun ResultContainerWithPermissionsComposable(
 
             is ResultContainer.Error -> {
 
-                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     DefaultText(text = Core.errorHandler.getUserFriendlyMessage(container.exception))
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     when (container.exception) {
                         is AuthenticationException -> {
                             DefaultButton(
@@ -64,7 +75,7 @@ fun ResultContainerWithPermissionsComposable(
             }
 
             is ResultContainer.Pending -> {
-                Box(modifier = Modifier.fillMaxSize(),contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = Color.Black)
                 }
             }
