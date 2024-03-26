@@ -16,19 +16,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.presentation.ResultContainerComposable
-import ru.edu.hse.sign_in.presentation.events.SignInEvent
-import ru.edu.hse.sign_in.presentation.viewmodels.SignInViewModel
 import ru.edu.hse.components.DefaultButton
 import ru.edu.hse.components.DefaultTextField
 import ru.edu.hse.components.DefaultTitle
 import ru.edu.hse.components.EmailIcon
 import ru.edu.hse.components.PasswordIcon
 import ru.edu.hse.components.SecondaryColor
+import ru.edu.hse.presentation.ResultContainerComposable
+import ru.edu.hse.sign_in.presentation.events.SignInEvent
+import ru.edu.hse.sign_in.presentation.viewmodels.SignInViewModel
+import ru.edu.hse.sing_in.R
 
 
 @Composable
@@ -66,7 +68,7 @@ fun SignInScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = "Вход")
+                DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = stringResource(R.string.sign_in_title))
 
                 DefaultTextField(
                     modifier = Modifier.padding(bottom = 20.dp),
@@ -76,8 +78,8 @@ fun SignInScreen(
                         onEvent(SignInEvent.DisableEmailError)
                     },
                     icon = { EmailIcon() },
-                    label = "Email",
-                    hint = "Введите email",
+                    label = stringResource(R.string.email_label),
+                    hint = stringResource(R.string.email_hint),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     error = container.unwrap().emailError
                 )
@@ -90,8 +92,8 @@ fun SignInScreen(
                         onEvent(SignInEvent.DisablePasswordError)
                     },
                     icon = { PasswordIcon() },
-                    label = "Пароль",
-                    hint = "Введите пароль",
+                    label = stringResource(R.string.password_label),
+                    hint = stringResource(R.string.password_hint),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     error = container.unwrap().passwordError
                 )
@@ -101,7 +103,7 @@ fun SignInScreen(
                         .padding(bottom = 10.dp)
                         .height(45.dp)
                         .fillMaxWidth(),
-                    text = "Войти",
+                    text = stringResource(R.string.sign_in),
                     enabled = container.unwrap().enableButtons,
                     onClick = { onEvent(SignInEvent.SignIn(email, password)) }
                 )
@@ -111,7 +113,7 @@ fun SignInScreen(
                         .padding(bottom = 10.dp)
                         .fillMaxWidth()
                         .height(45.dp),
-                    text = "Зарегистрироваться",
+                    text = stringResource(R.string.sign_up),
                     containerColor = SecondaryColor,
                     enabled = container.unwrap().enableButtons,
                     onClick = { onLaunchSignUp() }

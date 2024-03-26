@@ -16,16 +16,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.edu.hse.assistant.R
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.presentation.ResultContainerComposable
 import ru.edu.hse.components.DefaultButton
 import ru.edu.hse.components.DefaultCard
 import ru.edu.hse.components.DefaultText
 import ru.edu.hse.components.DefaultTextField
+import ru.edu.hse.presentation.ResultContainerComposable
 
 @Composable
 fun AssistantScreen(
@@ -46,12 +48,12 @@ fun AssistantScreen(
             onValueChange = { message = it },
             icon = {
                 Icon(
-                    painterResource(id = ru.edu.hse.assistant.R.drawable.ic_question),
+                    painterResource(id = R.drawable.ic_question),
                     contentDescription = "email icon"
                 )
             },
-            label = "Задайте вопрос ИИ-ассистенту",
-            hint = "Введите вопрос..."
+            label = stringResource(R.string.ask_ai_assistent),
+            hint = stringResource(R.string.enter_question_hint)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -60,7 +62,7 @@ fun AssistantScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(44.dp),
-            text = "Отправить",
+            text = stringResource(R.string.send),
             onClick = { onGetResponse(message) }
         )
 
@@ -69,7 +71,7 @@ fun AssistantScreen(
         DefaultCard(modifier = Modifier.fillMaxSize()) {
             DefaultText(
                 modifier = Modifier.padding(16.dp, 16.dp, 16.dp),
-                text = "Ответ: ",
+                text = stringResource(R.string.answer_title),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )

@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
@@ -58,11 +59,11 @@ fun ResultContainerComposable(
 
                     if (container.exception is AuthenticationException) {
                         DefaultButton(
-                            text = Core.resources.getString(R.string.core_presentation_logout),
+                            text = stringResource(R.string.core_presentation_logout),
                             onClick = { onRestartApp() })
                     } else {
                         DefaultButton(
-                            text = Core.resources.getString(R.string.core_presentation_try_again),
+                            text = stringResource(R.string.core_presentation_try_again),
                             onClick = { onTryAgain() })
                     }
                 }

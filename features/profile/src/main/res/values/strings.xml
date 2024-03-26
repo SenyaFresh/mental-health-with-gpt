@@ -3,4 +3,11 @@
     <string name="feature_profile_empty_email">Вы не ввели адрес почты.</string>
     <string name="feature_profile_empty_username">Вы не ввели имя.</string>
     <string name="feature_profile_invalid_data">Ошибка. Проверьте правильность введенных данных.</string>
+    <string name="profile_title">Профиль</string>
+    <string name="email_label">Email</string>
+    <string name="email_hint">Введите email</string>
+    <string name="username_title">Имя пользователя</string>
+    <string name="username_hint">Введите имя</string>
+    <string name="save">Сохранить</string>
+    <string name="logout">Выйти из аккаунта</string>
 </resources>

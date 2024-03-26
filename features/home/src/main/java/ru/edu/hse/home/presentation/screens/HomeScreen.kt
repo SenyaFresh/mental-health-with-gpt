@@ -20,9 +20,13 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.ResultContainer
+import ru.edu.hse.components.DefaultButton
+import ru.edu.hse.components.DefaultCardWithTitle
+import ru.edu.hse.components.SecondaryColor
 import ru.edu.hse.home.R
 import ru.edu.hse.home.domain.entities.EverydayMissionEntity
 import ru.edu.hse.home.domain.entities.EverydayMissionsListEntity
@@ -35,9 +39,6 @@ import ru.edu.hse.home.presentation.components.ResultContainerWithPermissionsCom
 import ru.edu.hse.home.presentation.components.TestDataItem
 import ru.edu.hse.home.presentation.events.HomeEvent
 import ru.edu.hse.presentation.ResultContainerComposable
-import ru.edu.hse.components.DefaultButton
-import ru.edu.hse.components.DefaultCardWithTitle
-import ru.edu.hse.components.SecondaryColor
 import kotlin.math.roundToInt
 
 @Composable
@@ -55,7 +56,7 @@ fun HomeScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        DefaultCardWithTitle(title = "Моё здоровье", modifier = Modifier.padding(8.dp)) {
+        DefaultCardWithTitle(title = stringResource(R.string.my_health_title), modifier = Modifier.padding(8.dp)) {
             Box(modifier = Modifier.height(300.dp)) {
                 ResultContainerWithPermissionsComposable(
                     container = healthContainer,
@@ -76,7 +77,7 @@ fun HomeScreen(
                                 )
                             },
                             value = healthContainer.unwrap().stepsCount?.toString() ?: "-",
-                            suffix = "шаг."
+                            suffix = stringResource(R.string.steps_suffix)
                         )
 
                         HealthDataItem(
@@ -87,7 +88,7 @@ fun HomeScreen(
                                 )
                             },
                             value = healthContainer.unwrap().heartRateAvg?.toString() ?: "-",
-                            suffix = "уд/мин"
+                            suffix = stringResource(R.string.heart_rate_suffix)
                         )
 
                         HealthDataItem(
@@ -99,14 +100,14 @@ fun HomeScreen(
                             },
                             value = healthContainer.unwrap().sleepMinutes?.toDouble()?.div(60)
                                 ?.roundToInt()?.toString() ?: "-",
-                            suffix = "ч."
+                            suffix = stringResource(R.string.sleep_hours_suffix)
                         )
                     }
                 }
             }
         }
 
-        DefaultCardWithTitle(title = "Ежедневные миссии", modifier = Modifier.padding(10.dp)) {
+        DefaultCardWithTitle(title = stringResource(R.string.everyday_missions_title), modifier = Modifier.padding(10.dp)) {
             ResultContainerComposable(
                 container = missionsContainer,
                 onTryAgain = { onEvent(HomeEvent.EverydayMissionsOnLoad) },
@@ -119,7 +120,7 @@ fun HomeScreen(
         }
 
         DefaultCardWithTitle(
-            title = "Тест на ментальное здоровье",
+            title = stringResource(R.string.mental_test_title),
             modifier = Modifier.padding(10.dp)
         ) {
             ResultContainerComposable(
@@ -144,7 +145,7 @@ fun HomeScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         DefaultButton(
-                            text = "Пройти тест",
+                            text = stringResource(R.string.get_tested),
                             onClick = { showTest = true },
                             containerColor = SecondaryColor
                         )

@@ -3,5 +3,12 @@
     <string name="feature_sign_in_empty_email">Вы не ввели адрес почты.</string>
     <string name="feature_sign_in_empty_password">Вы не ввели пароль.</string>
     <string name="feature_sign_in_invalid_data">Ошибка. Проверьте правильность введенных данных.</string>
+    <string name="email_label">Email</string>
+    <string name="sign_in_title">Вход</string>
+    <string name="email_hint">Введите email</string>
+    <string name="password_label">Пароль</string>
+    <string name="password_hint">Введите пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
 
 </resources>

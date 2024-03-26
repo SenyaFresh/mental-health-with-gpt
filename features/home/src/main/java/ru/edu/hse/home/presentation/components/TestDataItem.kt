@@ -13,17 +13,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.edu.hse.home.domain.entities.MentalTestQuestionEntity
-import ru.edu.hse.mylibrary.R
 import ru.edu.hse.components.DefaultButton
 import ru.edu.hse.components.DefaultCardWithTitle
 import ru.edu.hse.components.DefaultText
 import ru.edu.hse.components.DefaultTextField
 import ru.edu.hse.components.SecondaryColor
+import ru.edu.hse.home.domain.entities.MentalTestQuestionEntity
+import ru.edu.hse.mylibrary.R
 
 @Composable
 fun TestDataItem(
@@ -70,14 +71,14 @@ fun TestDataItem(
                         contentDescription = "pen icon"
                     )
                 },
-                label = "Ответ",
-                hint = "Введите ответ..."
+                label = stringResource(ru.edu.hse.home.R.string.answer),
+                hint = stringResource(ru.edu.hse.home.R.string.enter_answer_hint)
             )
 
             DefaultButton(modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
-                text = "Дальше",
+                text = stringResource(ru.edu.hse.home.R.string.next),
                 containerColor = SecondaryColor,
                 onClick = { onClick(questionEntity, answer) }
             )

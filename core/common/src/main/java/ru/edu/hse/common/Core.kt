@@ -12,9 +12,6 @@ object Core {
 
     val errorHandler: ErrorHandler get() = coreProvider.errorHandler
 
-    /**
-     * Global coroutine scope that ignores results and errors.
-     */
     val globalScope: CoroutineScope get() = coreProvider.globalScope
 
     val logger: Logger get() = coreProvider.logger

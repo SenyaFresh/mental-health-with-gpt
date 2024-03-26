@@ -12,14 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.Core
 import ru.edu.hse.common.PermissionsNotGrantedException
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.presentation.R
 import ru.edu.hse.components.DefaultButton
 import ru.edu.hse.components.DefaultText
+import ru.edu.hse.presentation.R
 
 @Composable
 fun ResultContainerWithPermissionsComposable(
@@ -54,20 +55,20 @@ fun ResultContainerWithPermissionsComposable(
                     when (container.exception) {
                         is AuthenticationException -> {
                             DefaultButton(
-                                text = Core.resources.getString(R.string.core_presentation_logout),
+                                text = stringResource(R.string.core_presentation_logout),
                                 onClick = { onRestartApp() })
                         }
 
                         is PermissionsNotGrantedException -> {
                             DefaultButton(
-                                text = "Дать разрешения",
+                                text = stringResource(ru.edu.hse.home.R.string.give_permissions),
                                 onClick = { onPermissionsLaunch() }
                             )
                         }
 
                         else -> {
                             DefaultButton(
-                                text = Core.resources.getString(R.string.core_presentation_try_again),
+                                text = stringResource(R.string.core_presentation_try_again),
                                 onClick = { onTryAgain() })
                         }
                     }

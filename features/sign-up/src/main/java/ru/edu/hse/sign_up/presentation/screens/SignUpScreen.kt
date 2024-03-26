@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ import ru.edu.hse.components.DefaultTitle
 import ru.edu.hse.components.EmailIcon
 import ru.edu.hse.components.NameIcon
 import ru.edu.hse.components.PasswordIcon
+import ru.edu.hse.sign_up.R
 import ru.edu.hse.sign_up.presentation.events.SignUpEvent
 import ru.edu.hse.sign_up.presentation.viewmodels.SignUpViewModel
 
@@ -59,7 +61,7 @@ fun SignUpScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = "Создать аккаунт")
+        DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = stringResource(R.string.sign_up_label))
 
         DefaultTextField(
             modifier = Modifier.padding(bottom = 20.dp),
@@ -69,8 +71,8 @@ fun SignUpScreen(
                 onEvent(SignUpEvent.DisableEmailError)
             },
             icon = { EmailIcon() },
-            label = "Email",
-            hint = "Введите email",
+            label = stringResource(R.string.email_label),
+            hint = stringResource(R.string.email_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             error = state.emailError
         )
@@ -83,8 +85,8 @@ fun SignUpScreen(
                 onEvent(SignUpEvent.DisableUsernameError)
             },
             icon = { NameIcon() },
-            label = "Имя пользователя",
-            hint = "Введите ваше имя",
+            label = stringResource(R.string.username_label),
+            hint = stringResource(R.string.username_hint),
             error = state.usernameError
         )
 
@@ -96,8 +98,8 @@ fun SignUpScreen(
                 onEvent(SignUpEvent.DisablePasswordError)
             },
             icon = { PasswordIcon() },
-            label = "Пароль",
-            hint = "Придумайте пароль",
+            label = stringResource(R.string.password_label),
+            hint = stringResource(R.string.password_hint),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             error = state.passwordError
         )
@@ -107,7 +109,7 @@ fun SignUpScreen(
                 .padding(bottom = 10.dp)
                 .fillMaxWidth()
                 .height(45.dp),
-            text = "Подтвердить",
+            text = stringResource(R.string.confirm),
             enabled = state.enableButtons,
             onClick = { onEvent(SignUpEvent.SignUp(email, username, password)) }
         )
@@ -124,7 +126,12 @@ fun SignUpScreen(
 @Composable
 fun SignUpScreenPreview() {
     SignUpScreen(
-        state = SignUpViewModel.State(false, false, false, false),
+        state = SignUpViewModel.State(
+            isInProgress = false,
+            emailError = false,
+            usernameError = false,
+            passwordError = false
+        ),
         onEvent = { },
         launchMainFlag = false,
         onLaunchMain = { }

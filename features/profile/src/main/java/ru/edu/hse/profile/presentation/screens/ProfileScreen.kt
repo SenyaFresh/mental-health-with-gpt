@@ -16,19 +16,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.edu.hse.common.ResultContainer
-import ru.edu.hse.presentation.ResultContainerComposable
-import ru.edu.hse.profile.domain.entities.Profile
-import ru.edu.hse.profile.presentation.events.ProfileEvent
-import ru.edu.hse.profile.presentation.viewmodels.ProfileViewModel
 import ru.edu.hse.components.DefaultButton
 import ru.edu.hse.components.DefaultTextField
 import ru.edu.hse.components.DefaultTitle
 import ru.edu.hse.components.EmailIcon
 import ru.edu.hse.components.NameIcon
+import ru.edu.hse.presentation.ResultContainerComposable
+import ru.edu.hse.profile.R
+import ru.edu.hse.profile.domain.entities.Profile
+import ru.edu.hse.profile.presentation.events.ProfileEvent
+import ru.edu.hse.profile.presentation.viewmodels.ProfileViewModel
 
 @Composable
 fun ProfileScreen(
@@ -60,7 +62,7 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = "Профиль")
+            DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = stringResource(R.string.profile_title))
 
             DefaultTextField(
                 modifier = Modifier.padding(bottom = 20.dp),
@@ -70,8 +72,8 @@ fun ProfileScreen(
                     onEvent(ProfileEvent.DisableEmailError)
                 },
                 icon = { EmailIcon() },
-                label = "Email",
-                hint = "Введите email",
+                label = stringResource(R.string.email_label),
+                hint = stringResource(R.string.email_hint),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 error = container.unwrap().emailError
             )
@@ -84,8 +86,8 @@ fun ProfileScreen(
                     onEvent(ProfileEvent.DisableUsernameError)
                 },
                 icon = { NameIcon() },
-                label = "Имя пользователя",
-                hint = "Введите имя",
+                label = stringResource(R.string.username_title),
+                hint = stringResource(R.string.username_hint),
                 error = container.unwrap().usernameError
             )
 
@@ -94,7 +96,7 @@ fun ProfileScreen(
                     .padding(bottom = 10.dp)
                     .height(45.dp)
                     .fillMaxWidth(),
-                text = "Сохранить",
+                text = stringResource(R.string.save),
                 enabled = container.unwrap().enableButtons,
                 onClick = { onEvent(ProfileEvent.EditProfile(Profile(email, username))) }
             )
@@ -104,7 +106,7 @@ fun ProfileScreen(
                     .padding(bottom = 10.dp)
                     .fillMaxWidth()
                     .height(45.dp),
-                text = "Выйти из аккаунта",
+                text = stringResource(R.string.logout),
                 containerColor = Color.Transparent,
                 enabled = container.unwrap().enableButtons,
                 onClick = {
