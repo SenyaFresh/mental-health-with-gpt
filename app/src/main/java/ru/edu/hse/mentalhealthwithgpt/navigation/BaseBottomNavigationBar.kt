@@ -1,7 +1,10 @@
 package ru.edu.hse.mentalhealthwithgpt.navigation
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -22,7 +25,6 @@ fun BaseBottomNavigationBar(
     items: List<BaseBottomNavigationItem>,
     selected: Int
 ) {
-
     NavigationBar(
         modifier = Modifier.fillMaxWidth(),
         containerColor = PrimaryColor
@@ -47,6 +49,10 @@ fun BaseBottomNavigationBar(
         }
     }
 
+    Spacer(modifier = Modifier
+        .fillMaxWidth()
+        .height(2.dp)
+        .background(color = Color.Black))
 }
 
 @Preview()
