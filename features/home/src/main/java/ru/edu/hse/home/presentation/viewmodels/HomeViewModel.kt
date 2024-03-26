@@ -61,6 +61,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun reloadHealthData() {
+        getHealthDataUseCase.reloadHealthData()
+    }
+
     private fun setMissionCompletion(mission: EverydayMissionEntity) = debounce {
         viewModelScope.launch {
             setMissionCompletionUseCase.setEverydayMissionsCompletion(mission)

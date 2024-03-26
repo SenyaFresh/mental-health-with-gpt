@@ -8,20 +8,11 @@ import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
 import ru.edu.hse.data.health.entities.HealthDataEntity
 
 interface HealthDataRepository {
+
     /**
      * Get set of permissions, that app needs.
      */
     val permissions: Set<String>
-
-    /**
-     * Check if Health Connect installed.
-     */
-    fun checkInstalled() : Boolean
-
-    /**
-     * Check if app has all permissions.
-     */
-    suspend fun hasAllPermissions(): Boolean
 
     /**
      * Get activity result contract to request permissions.
@@ -42,4 +33,10 @@ interface HealthDataRepository {
      * Set completion to [mission].
      */
     suspend fun setMissionCompletion(mission: EverydayMissionDataEntity)
+
+    /**
+     * Reload health data.
+     */
+    fun reloadHealthData()
+
 }

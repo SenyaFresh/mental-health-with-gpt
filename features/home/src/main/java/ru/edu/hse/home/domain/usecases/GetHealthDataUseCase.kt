@@ -14,4 +14,6 @@ class GetHealthDataUseCase @Inject constructor(
         return healthRepository.getHealthData()
     }
 
+    fun reloadHealthData() = healthRepository.reloadHealthData()
+
 }

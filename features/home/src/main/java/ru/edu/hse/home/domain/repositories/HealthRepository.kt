@@ -12,16 +12,6 @@ interface HealthRepository {
     val permissions: Set<String>
 
     /**
-     * Check if Health Connect installed.
-     */
-    fun checkInstalled() : Boolean
-
-    /**
-     * Check if app has all permissions.
-     */
-    suspend fun hasAllPermissions(): Boolean
-
-    /**
      * Get activity result contract to request permissions.
      */
     fun requestPermissionActivityContract(): ActivityResultContract<Set<String>, Set<String>>
@@ -30,5 +20,10 @@ interface HealthRepository {
      * Get up-to-date [HealthData] from repository.
      */
     suspend fun getHealthData() : Flow<ResultContainer<HealthData>>
+
+    /**
+     * Reload health data.
+     */
+    fun reloadHealthData()
 
 }

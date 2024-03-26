@@ -47,12 +47,12 @@ class HealthConnectHealthDataSource @Inject constructor(@ApplicationContext priv
         HealthPermission.getReadPermission(SleepSessionRecord::class)
     )
 
-    override fun checkInstalled(): Boolean {
+    private fun checkInstalled(): Boolean {
         val sdkStatus = HealthConnectClient.getSdkStatus(context)
         return sdkStatus == SDK_AVAILABLE
     }
 
-    override suspend fun hasAllPermissions(): Boolean {
+    private suspend fun hasAllPermissions(): Boolean {
         val grantedPermissions = healthConnectClient.permissionController.getGrantedPermissions()
 
         return grantedPermissions.containsAll(permissions)

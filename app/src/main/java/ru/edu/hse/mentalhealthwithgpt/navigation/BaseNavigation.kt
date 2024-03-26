@@ -165,7 +165,9 @@ fun BaseNavigation() {
 
                 val permissions = homeViewModel.permissions
                 val permissionsLauncher =
-                    rememberLauncherForActivityResult(homeViewModel.permissionsLauncher) { }
+                    rememberLauncherForActivityResult(homeViewModel.permissionsLauncher) {
+                        homeViewModel.reloadHealthData()
+                    }
 
                 val healthDataState = homeViewModel.healthDataStateFlow.collectAsState()
                 val everydayMissionsState = homeViewModel.everydayMissionsStateFlow.collectAsState()

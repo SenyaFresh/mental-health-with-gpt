@@ -17,14 +17,6 @@ class AdapterHealthRepository @Inject constructor(
     override val permissions: Set<String>
         get() = healthDataRepository.permissions
 
-    override fun checkInstalled(): Boolean {
-        return healthDataRepository.checkInstalled()
-    }
-
-    override suspend fun hasAllPermissions(): Boolean {
-        return healthDataRepository.hasAllPermissions()
-    }
-
     override fun requestPermissionActivityContract(): ActivityResultContract<Set<String>, Set<String>> {
         return healthDataRepository.requestPermissionActivityContract()
     }
@@ -33,5 +25,7 @@ class AdapterHealthRepository @Inject constructor(
         return healthDataRepository.getHealthData()
             .map { container -> container.map { it.toHealthData() } }
     }
+
+    override fun reloadHealthData() = healthDataRepository.reloadHealthData()
 
 }

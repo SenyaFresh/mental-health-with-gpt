@@ -13,16 +13,6 @@ interface HealthDataSource {
     val permissions: Set<String>
 
     /**
-     * Check if Health Connect installed.
-     */
-    fun checkInstalled() : Boolean
-
-    /**
-     * Check if app has all permissions.
-     */
-    suspend fun hasAllPermissions(): Boolean
-
-    /**
      * Get activity result contract to request permissions.
      */
     fun requestPermissionActivityContract(): ActivityResultContract<Set<String>, Set<String>>

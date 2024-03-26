@@ -44,10 +44,6 @@ class RealHealthDataRepository @Inject constructor(
         }
     }
 
-    override fun checkInstalled(): Boolean = healthDataSource.checkInstalled()
-
-    override suspend fun hasAllPermissions(): Boolean = healthDataSource.hasAllPermissions()
-
     override fun requestPermissionActivityContract(): ActivityResultContract<Set<String>, Set<String>> =
         healthDataSource.requestPermissionActivityContract()
 
@@ -62,6 +58,10 @@ class RealHealthDataRepository @Inject constructor(
 
     override suspend fun setMissionCompletion(mission: EverydayMissionDataEntity) {
         healthDataSource.setMissionCompletion(mission)
+    }
+
+    override fun reloadHealthData() {
+        healthDataLazyFlowLoader.newAsyncLoad()
     }
 
 }
