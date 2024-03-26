@@ -48,6 +48,7 @@ fun ResultContainerComposable(
 
             is ResultContainer.Error -> {
                 Column(
+                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
