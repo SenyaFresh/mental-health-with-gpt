@@ -48,8 +48,8 @@ class SignInViewModel @Inject constructor(
             try {
                 loadScreenStateFlow.value = ResultContainer.Pending
                 if (checkIfSignedInUseCase.isSignedIn()) {
-                    loadScreenStateFlow.value = ResultContainer.Success(Unit)
                     _launchMainStateFlow.value = true
+                    loadScreenStateFlow.value = ResultContainer.Success(Unit)
                 } else {
                     loadScreenStateFlow.value = ResultContainer.Success(Unit)
                 }

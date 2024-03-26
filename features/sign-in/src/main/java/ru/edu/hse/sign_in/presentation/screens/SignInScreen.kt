@@ -42,89 +42,88 @@ fun SignInScreen(
     onRestartApp: () -> Unit
 ) {
 
-    ResultContainerComposable(
-        container = container,
-        onTryAgain = onTryAgain,
-        onRestartApp = onRestartApp
-    ) {
-        var email by rememberSaveable {
-            mutableStateOf("")
-        }
-
-        var password by rememberSaveable {
-            mutableStateOf("")
-        }
-
-        if (launchMainFlag) {
-            onLaunchMain()
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 150.dp, start = 30.dp, end = 30.dp)
-                .statusBarsPadding(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    if (launchMainFlag) {
+        onLaunchMain()
+    } else {
+        ResultContainerComposable(
+            container = container,
+            onTryAgain = onTryAgain,
+            onRestartApp = onRestartApp
         ) {
+            var email by rememberSaveable {
+                mutableStateOf("")
+            }
 
-            DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = "Вход")
+            var password by rememberSaveable {
+                mutableStateOf("")
+            }
 
-            DefaultTextField(
-                modifier = Modifier.padding(bottom = 20.dp),
-                value = email,
-                onValueChange = {
-                    email = it
-                    onEvent(SignInEvent.DisableEmailError)
-                },
-                icon = { EmailIcon() },
-                label = "Email",
-                hint = "Введите email",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                error = container.unwrap().emailError
-            )
-
-            DefaultTextField(
-                modifier = Modifier.padding(bottom = 20.dp),
-                value = password,
-                onValueChange = {
-                    password = it
-                    onEvent(SignInEvent.DisablePasswordError)
-                },
-                icon = { PasswordIcon() },
-                label = "Пароль",
-                hint = "Введите пароль",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                error = container.unwrap().passwordError
-            )
-
-            DefaultButton(
+            Column(
                 modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .height(45.dp)
-                    .fillMaxWidth(),
-                text = "Войти",
-                enabled = container.unwrap().enableButtons,
-                onClick = { onEvent(SignInEvent.SignIn(email, password)) }
-            )
+                    .fillMaxSize()
+                    .padding(top = 150.dp, start = 30.dp, end = 30.dp)
+                    .statusBarsPadding(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            DefaultButton(
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .fillMaxWidth()
-                    .height(45.dp),
-                text = "Зарегистрироваться",
-                containerColor = SecondaryColor,
-                enabled = container.unwrap().enableButtons,
-                onClick = { onLaunchSignUp() }
-            )
+                DefaultTitle(modifier = Modifier.padding(bottom = 20.dp), text = "Вход")
 
-            if (container.unwrap().showProgressBar) {
-                CircularProgressIndicator(
-                    color = Color.Black
+                DefaultTextField(
+                    modifier = Modifier.padding(bottom = 20.dp),
+                    value = email,
+                    onValueChange = {
+                        email = it
+                        onEvent(SignInEvent.DisableEmailError)
+                    },
+                    icon = { EmailIcon() },
+                    label = "Email",
+                    hint = "Введите email",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    error = container.unwrap().emailError
                 )
+
+                DefaultTextField(
+                    modifier = Modifier.padding(bottom = 20.dp),
+                    value = password,
+                    onValueChange = {
+                        password = it
+                        onEvent(SignInEvent.DisablePasswordError)
+                    },
+                    icon = { PasswordIcon() },
+                    label = "Пароль",
+                    hint = "Введите пароль",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    error = container.unwrap().passwordError
+                )
+
+                DefaultButton(
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .height(45.dp)
+                        .fillMaxWidth(),
+                    text = "Войти",
+                    enabled = container.unwrap().enableButtons,
+                    onClick = { onEvent(SignInEvent.SignIn(email, password)) }
+                )
+
+                DefaultButton(
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .fillMaxWidth()
+                        .height(45.dp),
+                    text = "Зарегистрироваться",
+                    containerColor = SecondaryColor,
+                    enabled = container.unwrap().enableButtons,
+                    onClick = { onLaunchSignUp() }
+                )
+
+                if (container.unwrap().showProgressBar) {
+                    CircularProgressIndicator(
+                        color = Color.Black
+                    )
+                }
             }
         }
-
     }
 }
 
