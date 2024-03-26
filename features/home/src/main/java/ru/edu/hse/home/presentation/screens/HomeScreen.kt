@@ -175,8 +175,8 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(
-        healthContainer = ResultContainer.Success(HealthData(7000, 70, 360)),
-        missionsContainer = ResultContainer.Success(
+        healthContainer = ResultContainer.Done(HealthData(7000, 70, 360)),
+        missionsContainer = ResultContainer.Done(
             EverydayMissionsListEntity(
                 listOf(
                     EverydayMissionEntity(text = "Прочитать книгу"),
@@ -185,7 +185,7 @@ fun HomeScreenPreview() {
                 )
             )
         ),
-        mentalTestContainer = ResultContainer.Success(
+        mentalTestContainer = ResultContainer.Done(
             MentalTestEntity(
                 "af",
                 listOf(

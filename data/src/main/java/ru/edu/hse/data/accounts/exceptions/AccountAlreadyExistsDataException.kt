@@ -1,5 +1,5 @@
 package ru.edu.hse.data.accounts.exceptions
 
-import ru.edu.hse.common.AppException
+import ru.edu.hse.common.UserFriendlyException
 
-class AccountAlreadyExistsDataException: AppException()
+class AccountAlreadyExistsDataException: UserFriendlyException("Такой аккаунт уже существует.")

@@ -8,9 +8,9 @@ import kotlinx.coroutines.runBlocking
  * Contains [map] method for converting data and [suspendMap] method for converting data
  * from a coroutine.
  *
- * @see ResultContainer.Pending
+ * @see ResultContainer.Loading
  * @see ResultContainer.Error
- * @see ResultContainer.Success
+ * @see ResultContainer.Done
  */
 sealed class ResultContainer<out T> {
 
@@ -33,7 +33,7 @@ sealed class ResultContainer<out T> {
     /**
      * Convert ResultContainer type to another type using specified suspend [mapper].
      */
-    abstract suspend fun <R> suspendMap(mapper: (suspend (T) -> R)? = null): ResultContainer<R>
+    protected abstract suspend fun <R> suspendMap(mapper: (suspend (T) -> R)? = null): ResultContainer<R>
 
     /**
      * Get value of ReturnContainer if it is possible or throw an exception.
@@ -48,7 +48,7 @@ sealed class ResultContainer<out T> {
     /**
      * Operation in progress.
      */
-    data object Pending : ResultContainer<Nothing>() {
+    data object Loading : ResultContainer<Nothing>() {
         override suspend fun <R> suspendMap(mapper: (suspend (Nothing) -> R)?): ResultContainer<R> {
             return this
         }
@@ -84,13 +84,13 @@ sealed class ResultContainer<out T> {
     /**
      * Operation was completed successfully.
      */
-    data class Success<T>(
+    data class Done<T>(
         val value: T
     ) : ResultContainer<T>() {
         override suspend fun <R> suspendMap(mapper: (suspend (T) -> R)?): ResultContainer<R> {
             if (mapper == null) throw IllegalStateException("Can't map value: mapper is null.")
             return try {
-                Success(mapper(value))
+                Done(mapper(value))
             } catch (e: Exception) {
                 Error(e)
             }

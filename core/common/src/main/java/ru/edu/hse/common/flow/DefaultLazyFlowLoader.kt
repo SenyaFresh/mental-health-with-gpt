@@ -31,7 +31,7 @@ class DefaultLazyFlowLoader<T>(
     private var scope: CoroutineScope? = null
     private var cancellationJob: Job? = null
     private var inputFlow = MutableStateFlow<Value<T>>(Value.LoadValue(valueLoader))
-    private val outputFlow = MutableStateFlow<ResultContainer<T>>(ResultContainer.Pending)
+    private val outputFlow = MutableStateFlow<ResultContainer<T>>(ResultContainer.Loading)
 
     private val mutex = Mutex()
 
@@ -141,7 +141,7 @@ class DefaultLazyFlowLoader<T>(
      */
     private fun startLoading() {
         if (scope != null) return
-        outputFlow.value = ResultContainer.Pending
+        outputFlow.value = ResultContainer.Loading
         scope = CoroutineScope(SupervisorJob() + dispatcher)
         scope?.launch {
             inputFlow.collectLatest {
@@ -158,9 +158,9 @@ class DefaultLazyFlowLoader<T>(
      */
     private suspend fun loadValue(loadValue: Value.LoadValue<T>) {
         try {
-            if (!loadValue.silently) outputFlow.value = ResultContainer.Pending
+            if (!loadValue.silently) outputFlow.value = ResultContainer.Loading
             val value = loadValue.loader()
-            outputFlow.value = ResultContainer.Success(value)
+            outputFlow.value = ResultContainer.Done(value)
             mutex.withLock {
                 loadValue.completableDeferred?.complete(value)
             }

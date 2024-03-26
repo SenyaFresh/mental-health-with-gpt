@@ -36,7 +36,7 @@ fun ResultContainerWithPermissionsComposable(
             .padding(vertical = 12.dp)
     ) {
         when (container) {
-            is ResultContainer.Success -> {
+            is ResultContainer.Done -> {
                 onSuccess()
             }
 
@@ -74,7 +74,7 @@ fun ResultContainerWithPermissionsComposable(
                 }
             }
 
-            is ResultContainer.Pending -> {
+            is ResultContainer.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = Color.Black)
                 }

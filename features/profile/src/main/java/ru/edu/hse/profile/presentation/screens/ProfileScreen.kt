@@ -127,7 +127,7 @@ fun ProfileScreen(
 @Composable
 fun ProfileScreenPreview() {
     ProfileScreen(
-        ResultContainer.Success(
+        ResultContainer.Done(
             ProfileViewModel.State(
                 Profile("test@gmail.com", "test"),
                 isInProgress = false,

@@ -131,7 +131,7 @@ fun SignInScreen(
 @Composable
 fun SignInScreenPreview() {
     SignInScreen(
-        container = ResultContainer.Success(SignInViewModel.State(false, false, false)),
+        container = ResultContainer.Done(SignInViewModel.State(false, false, false)),
         onTryAgain = { },
         onEvent = {},
         launchMainFlag = false,

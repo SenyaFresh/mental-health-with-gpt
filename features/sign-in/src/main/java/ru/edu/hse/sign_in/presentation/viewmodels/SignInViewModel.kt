@@ -23,7 +23,7 @@ class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase
 ) : BaseViewModel() {
 
-    private val loadScreenStateFlow = MutableStateFlow<ResultContainer<Unit>>(ResultContainer.Pending)
+    private val loadScreenStateFlow = MutableStateFlow<ResultContainer<Unit>>(ResultContainer.Loading)
     private val progressStateFlow = MutableStateFlow(false)
     private val emailErrorStateFlow = MutableStateFlow(false)
     private val passwordErrorStateFlow = MutableStateFlow(false)
@@ -46,12 +46,12 @@ class SignInViewModel @Inject constructor(
     fun load() = debounce {
         viewModelScope.launch {
             try {
-                loadScreenStateFlow.value = ResultContainer.Pending
+                loadScreenStateFlow.value = ResultContainer.Loading
                 if (checkIfSignedInUseCase.isSignedIn()) {
                     _launchMainStateFlow.value = true
-                    loadScreenStateFlow.value = ResultContainer.Success(Unit)
+                    loadScreenStateFlow.value = ResultContainer.Done(Unit)
                 } else {
-                    loadScreenStateFlow.value = ResultContainer.Success(Unit)
+                    loadScreenStateFlow.value = ResultContainer.Done(Unit)
                 }
             } catch (e: Exception) {
                 loadScreenStateFlow.value = ResultContainer.Error(e)

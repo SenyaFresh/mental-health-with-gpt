@@ -43,7 +43,7 @@ class RealAccountsDataRepository @Inject constructor(
 
     override suspend fun updateAccountUsernameAndEmail(username: String, email: String) {
         val updatedAccount = accountsDataSource.updateAccount(username = username, email = email)
-        accountLazyFlowLoader.update(ResultContainer.Success(updatedAccount))
+        accountLazyFlowLoader.update(ResultContainer.Done(updatedAccount))
     }
 
     override suspend fun logout() {

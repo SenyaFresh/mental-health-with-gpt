@@ -1,5 +1,5 @@
 package ru.edu.hse.data.health.exceptions
 
-import ru.edu.hse.common.AppException
+import ru.edu.hse.common.UserFriendlyException
 
-class HealthConnectNotInstalledException: AppException()
+class HealthConnectNotInstalledException: UserFriendlyException("На устройстве не установлено приложение Health Connect.")

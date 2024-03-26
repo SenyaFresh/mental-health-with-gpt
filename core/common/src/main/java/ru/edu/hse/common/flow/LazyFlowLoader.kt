@@ -17,13 +17,13 @@ interface LazyFlowLoader<T> {
 
     /**
      * Start a new load and wait for result. Use [silently] if [ResultContainer] should not
-     * be in [ResultContainer.Pending] status.
+     * be in [ResultContainer.Loading] status.
      */
     suspend fun newLoad(silently: Boolean = false, valueLoader: ValueLoader<T>? = null): T
 
     /**
      * Start a new load without waiting for a result. Use [silently] if [ResultContainer] should not
-     * be in [ResultContainer.Pending] status.
+     * be in [ResultContainer.Loading] status.
      */
     fun newAsyncLoad(silently: Boolean = false, valueLoader: ValueLoader<T>? = null)
 

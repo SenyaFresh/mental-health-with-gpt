@@ -9,26 +9,19 @@ open class AppException(
 ) : Exception(message, cause)
 
 /**
- * Exception for internet problems.
- */
-class ConnectionException(cause: Exception) : AppException(cause = cause)
-
-/**
  * Exception for authentication problems.
  */
 class AuthenticationException(cause: Exception? = null) : AppException(cause = cause)
 
 /**
- * Exception for cases when something does not exist.
+ * Exception for cases when permissions not granted.
  */
-class NotFoundException : AppException()
-
 class PermissionsNotGrantedException : AppException()
 
 /**
  * Exception with message that can be shown to user.
  */
-class UserFriendlyException(
+open class UserFriendlyException(
     val userFriendlyMessage: String,
-    cause: Exception
-) : AppException(cause.message ?: "", cause)
+    cause: Exception? = null
+) : AppException(cause?.message ?: "", cause)

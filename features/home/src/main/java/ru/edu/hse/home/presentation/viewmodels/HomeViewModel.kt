@@ -34,15 +34,15 @@ class HomeViewModel @Inject constructor(
     val permissionsLauncher = getPermissionsUseCase.requestPermissionActivityContract()
 
     private val _healthDataStateFlow =
-        MutableStateFlow<ResultContainer<HealthData>>(ResultContainer.Pending)
+        MutableStateFlow<ResultContainer<HealthData>>(ResultContainer.Loading)
     val healthDataStateFlow = _healthDataStateFlow.asStateFlow()
 
     private val _everydayMissionsStateFlow =
-        MutableStateFlow<ResultContainer<EverydayMissionsListEntity>>(ResultContainer.Pending)
+        MutableStateFlow<ResultContainer<EverydayMissionsListEntity>>(ResultContainer.Loading)
     val everydayMissionsStateFlow = _everydayMissionsStateFlow.asStateFlow()
 
     private val _mentalTestStateFlow =
-        MutableStateFlow<ResultContainer<MentalTestEntity>>(ResultContainer.Pending)
+        MutableStateFlow<ResultContainer<MentalTestEntity>>(ResultContainer.Loading)
     val mentalTestStateFlow = _mentalTestStateFlow.asStateFlow()
 
     init {

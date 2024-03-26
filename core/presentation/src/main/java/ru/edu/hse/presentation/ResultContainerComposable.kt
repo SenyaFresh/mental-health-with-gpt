@@ -24,11 +24,11 @@ import ru.edu.hse.themes.DefaultText
 /**
  * Represents a container that can:
  *
- * show progress bar when [container] is [ResultContainer.Pending];
+ * show progress bar when [container] is [ResultContainer.Loading];
  *
  * show error when [container] is [ResultContainer.Error] and button to handle error;
  *
- * show [onSuccess] composable when [container] is [ResultContainer.Success].
+ * show [onSuccess] composable when [container] is [ResultContainer.Done].
  */
 @Composable
 fun ResultContainerComposable(
@@ -42,7 +42,7 @@ fun ResultContainerComposable(
         .fillMaxWidth()
         .padding(vertical = 12.dp)) {
         when (container) {
-            is ResultContainer.Success -> {
+            is ResultContainer.Done -> {
                 onSuccess()
             }
 
@@ -67,7 +67,7 @@ fun ResultContainerComposable(
                 }
             }
 
-            is ResultContainer.Pending -> {
+            is ResultContainer.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = Color.Black)
                 }

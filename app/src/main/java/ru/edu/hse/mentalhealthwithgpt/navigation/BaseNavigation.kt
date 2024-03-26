@@ -118,7 +118,7 @@ fun BaseNavigation() {
                 val signInViewModel: SignInViewModel = hiltViewModel()
 
                 val signInState =
-                    signInViewModel.stateFlow.collectAsState(initial = ResultContainer.Pending)
+                    signInViewModel.stateFlow.collectAsState(initial = ResultContainer.Loading)
                 val launchMainState = signInViewModel.launchMainStateFlow.collectAsState()
 
                 SignInScreen(
@@ -194,7 +194,7 @@ fun BaseNavigation() {
                 val profileViewModel: ProfileViewModel = hiltViewModel()
 
                 val profileState =
-                    profileViewModel.stateFlow.collectAsState(initial = ResultContainer.Pending)
+                    profileViewModel.stateFlow.collectAsState(initial = ResultContainer.Loading)
 
                 ProfileScreen(
                     container = profileState.value,

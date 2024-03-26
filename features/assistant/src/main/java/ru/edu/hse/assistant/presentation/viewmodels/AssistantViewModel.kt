@@ -15,7 +15,7 @@ class AssistantViewModel @Inject constructor(
     private val getResponseUseCase: GetResponseUseCase
 ) : BaseViewModel() {
 
-    private val _response = MutableStateFlow<ResultContainer<String>>(ResultContainer.Success(""))
+    private val _response = MutableStateFlow<ResultContainer<String>>(ResultContainer.Done(""))
     val response = _response.asStateFlow()
 
     fun getResponse(message: String) = debounce {
@@ -26,7 +26,7 @@ class AssistantViewModel @Inject constructor(
                 .takeWhile { !isCompleted }
                 .collect {
                     _response.value = it
-                    if (it !is ResultContainer.Pending) {
+                    if (it !is ResultContainer.Loading) {
                         isCompleted = true
                         return@collect
                     }
