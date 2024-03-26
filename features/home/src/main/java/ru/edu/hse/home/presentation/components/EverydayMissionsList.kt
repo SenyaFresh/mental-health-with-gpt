@@ -30,10 +30,10 @@ fun EverydayMissionsList(
     onMissionCompleted: (EverydayMissionEntity) -> Unit
 ) {
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
         for (mission in dailyMissions) {
             EverydayMissionItem(mission, onMissionCompleted)
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
         }
     }
 }
@@ -46,7 +46,7 @@ fun EverydayMissionItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp),
+            .padding(2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         var onMissionPressed by rememberSaveable {

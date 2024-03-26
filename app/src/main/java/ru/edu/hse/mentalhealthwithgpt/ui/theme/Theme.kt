@@ -14,7 +14,8 @@ import ru.edu.hse.themes.SecondaryColor
 
 private val ColorScheme = lightColorScheme(
     primary = PrimaryColor,
-    secondary = SecondaryColor
+    secondary = SecondaryColor,
+    background = Color.White
 )
 
 @Composable
