@@ -39,9 +39,11 @@ fun ResultContainerComposable(
     onSuccess: @Composable () -> Unit
 ) {
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 12.dp)) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp)
+    ) {
         when (container) {
             is ResultContainer.Done -> {
                 onSuccess()
@@ -53,7 +55,10 @@ fun ResultContainerComposable(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    DefaultText(text = Core.errorHandler.getUserFriendlyMessage(container.exception))
+                    DefaultText(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        text = Core.errorHandler.getUserFriendlyMessage(container.exception)
+                    )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
