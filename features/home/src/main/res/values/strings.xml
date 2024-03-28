@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="give_permissions">Дать разрешения</string>
+    <string name="answer">Ответ</string>
+    <string name="enter_answer_hint">Введите ответ...</string>
+    <string name="next">Дальше</string>
+    <string name="my_health_title">Моё здоровье</string>
+    <string name="steps_suffix">шаг.</string>
+    <string name="heart_rate_suffix">уд/мин</string>
+    <string name="sleep_hours_suffix">ч.</string>
+    <string name="everyday_missions_title">Ежедневные миссии</string>
+    <string name="mental_test_title">Тест на ментальное здоровье</string>
+    <string name="get_tested">Пройти тест</string>
+</resources>
