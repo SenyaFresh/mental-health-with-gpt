@@ -5,6 +5,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 import ru.edu.hse.common.AuthenticationException
 import ru.edu.hse.common.ErrorHandler
 import ru.edu.hse.common.Logger
+import ru.edu.hse.common.PermissionsNotGrantedException
 import ru.edu.hse.common.Resources
 import ru.edu.hse.common.Toaster
 import ru.edu.hse.common.UserFriendlyException
@@ -38,6 +39,7 @@ class DefaultErrorHandler(
     override fun getUserFriendlyMessage(exception: Throwable): String {
         return when (exception) {
             is AuthenticationException -> resources.getString(R.string.core_common_exception_authentication)
+            is PermissionsNotGrantedException -> resources.getString(R.string.core_common_exception_permission)
             is UserFriendlyException -> exception.userFriendlyMessage
             is TimeoutCancellationException -> resources.getString(R.string.core_common_exception_timeout)
             else -> resources.getString(R.string.core_common_exception_unknown)
