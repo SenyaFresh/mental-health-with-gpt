@@ -31,8 +31,7 @@ interface AccountsDataSource {
      */
     suspend fun updateAccount(
         username: String? = null,
-        email: String? = null,
-        depressionPoints: Int? = null
+        email: String? = null
     ): AccountDataEntity
 
     suspend fun logout()

@@ -84,14 +84,12 @@ class FirebaseAccountsDataSource @Inject constructor(): AccountsDataSource {
     override suspend fun updateAccount(
         username: String?,
         email: String?,
-        depressionPoints: Int?
     ): AccountDataEntity {
         var accountDataEntity: AccountDataEntity = getAccount()
         val firestoreAccountUpdateData = HashMap<String, Any>()
 
         username?.let { firestoreAccountUpdateData[KEY_USERNAME] = it }
         email?.let { firestoreAccountUpdateData[KEY_EMAIL] = it }
-        depressionPoints?.let { firestoreAccountUpdateData[KEY_DEPRESSION_POINTS] = it }
 
         return try {
             db.collection(USERS_COLLECTION)
@@ -102,7 +100,6 @@ class FirebaseAccountsDataSource @Inject constructor(): AccountsDataSource {
             accountDataEntity = accountDataEntity.copy(
                 email = email ?: accountDataEntity.email,
                 username = username ?: accountDataEntity.username,
-                depressionPoints = depressionPoints ?: accountDataEntity.depressionPoints,
             )
             accountDataEntity
         } catch (e: Exception) {
@@ -121,7 +118,5 @@ class FirebaseAccountsDataSource @Inject constructor(): AccountsDataSource {
         const val KEY_EMAIL = "email"
         const val KEY_USERNAME = "username"
         const val KEY_FETCHED_DATA = "fetchedData"
-        const val KEY_DEPRESSION_POINTS = "depressionPoints"
     }
-
 }
