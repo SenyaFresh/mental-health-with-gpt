@@ -7,6 +7,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ru.edu.hse.common.AppException
 import ru.edu.hse.common.Core
 import ru.edu.hse.data.health.entities.EverydayMissionDataEntity
 import ru.edu.hse.data.health.entities.EverydayMissionsListDataEntity
@@ -67,6 +68,17 @@ object RemoteConfigManager {
         } catch (e: Exception) {
             logger.logError(e, "getEverydayMissionsList:failure")
             throw MentalTestRepositoryException()
+        }
+    }
+
+    fun getChatGPTApiKey(): String {
+        try {
+            val key = firebaseRemoteConfig.getString("chatGPTApiKey")
+            logger.log("getChatGPTApiKey:success")
+            return key
+        } catch (e: Exception) {
+            logger.logError(e, "getChatGPTApiKey:failure")
+            throw AppException()
         }
     }
 }

@@ -7,6 +7,7 @@ import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import ru.edu.hse.common.Core
+import ru.edu.hse.data.RemoteConfigManager
 import ru.edu.hse.data.gpt.exceptions.ChatGPTException
 import javax.inject.Inject
 
@@ -14,11 +15,9 @@ class OpenAIChatGPTDataSource @Inject constructor(): ChatGPTDataSource {
 
     private val logger = Core.logger
 
-    private val openAI = OpenAI(CHAT_GPT_API_KEY)
-
     override suspend fun getResponse(message: String): String {
-
         try {
+            val openAI = OpenAI(RemoteConfigManager.getChatGPTApiKey())
             val chatCompletionRequest = ChatCompletionRequest(
                 model = ModelId("gpt-3.5-turbo"),
                 messages = listOf(
@@ -48,7 +47,6 @@ class OpenAIChatGPTDataSource @Inject constructor(): ChatGPTDataSource {
     }
 
     companion object {
-        const val CHAT_GPT_API_KEY = "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"
 
         const val CHAT_GPT_PERSONA_AND_PROMPT = "# Персонаж\n" +
                 "Вы - ассистент по ментальному здоровью. Вы специалист в вопросах ментального и физического здоровья и обладаете знаниями в области улучшения ментального и психологического здоровья.\n" +
@@ -69,4 +67,5 @@ class OpenAIChatGPTDataSource @Inject constructor(): ChatGPTDataSource {
                 "- Не забывайте, что вы не можете заменить профессионального медицинского специалиста или психолога.\n" +
                 "- Советы и рекомендации должны быть общего характера и не должны расцениваться как профессиональная медицинская помощь."
     }
+
 }
