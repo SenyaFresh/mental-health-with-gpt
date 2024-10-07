@@ -1,5 +1,6 @@
 package ru.edu.hse.mentalhealthwithgpt.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -178,6 +179,10 @@ fun BaseNavigation() {
                 val healthDataState = homeViewModel.healthDataStateFlow.collectAsState()
                 val everydayMissionsState = homeViewModel.everydayMissionsStateFlow.collectAsState()
                 val mentalTestState = homeViewModel.mentalTestStateFlow.collectAsState()
+
+                BackHandler {
+                    // pressing back does nothing
+                }
 
                 HomeScreen(
                     healthContainer = healthDataState.value,
