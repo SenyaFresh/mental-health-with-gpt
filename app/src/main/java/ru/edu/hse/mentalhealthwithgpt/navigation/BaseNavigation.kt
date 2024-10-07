@@ -95,7 +95,9 @@ fun BaseNavigation() {
         }
     ) {
         NavHost(
-            modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = it.calculateBottomPadding()),
             navController = navController,
             startDestination = Screen.SignInScreen.route,
             enterTransition = { fadeIn(animationSpec = tween(200)) },
